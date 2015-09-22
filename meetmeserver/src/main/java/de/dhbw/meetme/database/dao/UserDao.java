@@ -17,6 +17,8 @@ import java.util.Collection;
  * <p>
  * Decide yourself which one you want to use.
  * You may even mix both approaches.
+ *
+ * Ist das so etwas wie ein DAO Manager, der auf die DAO's zugreift??
  */
 @ApplicationScoped
 public class UserDao extends JpaDao<UuidId, User> {
@@ -30,4 +32,6 @@ public class UserDao extends JpaDao<UuidId, User> {
         query.setParameter("name", name);
         return (Collection<User>) query.getResultList();
     }
+
+
 }

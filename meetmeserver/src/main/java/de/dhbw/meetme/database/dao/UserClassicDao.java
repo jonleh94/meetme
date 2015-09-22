@@ -19,12 +19,18 @@ import java.util.List;
  * The same class the User Dao, but implemented in the traditional way.
  * You can use either this or the the other.
  * Decide yourself!
+ *
+ * Welche Datenbanklösung wird jetzt verwendet? H2?
  */
 public class UserClassicDao implements Dao<UuidId, User> {
     @PersistenceContext
     protected EntityManager entityManager;
 
     private Connection getConnection() {
+
+        //
+
+
         return (entityManager.unwrap(SessionImpl.class)).connection();
     }
 

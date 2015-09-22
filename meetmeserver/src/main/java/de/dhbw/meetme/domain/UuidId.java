@@ -6,6 +6,10 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
+ * structure makes sense..
+ * Dont get why the UUID objects are converted to Strings.
+ *
+ * Is the SetId just existing for changing ID's later after user is created with an ID?
  *
  */
 @Embeddable
@@ -15,15 +19,13 @@ public class UuidId implements Serializable {
 
   private UuidId(String id) {
     this.id = id;
-  }
+  } //First contructor with parameterized String "id"
 
-  public UuidId() {
-    id = UUID.randomUUID().toString();
-  }
+  public UuidId() {id = UUID.randomUUID().toString();} //Second constructor with no paramter -> generates UUID and converts into string
 
   public void setId(String id) {
     this.id = UUID.fromString(id).toString();
-  }
+  } //Sets ID by taking ID as paramter and generates new UUID and comnverts it into string
 
   @Override
   public boolean equals(Object o) {
@@ -51,6 +53,7 @@ public class UuidId implements Serializable {
     return id;
   }
 
+  //Method does not make any sense to me, fromString is pre defined by class UUID, why is this (Override??!!) necessary?
   @SuppressWarnings("ResultOfMethodCallIgnored")
   public static UuidId fromString(String id) {
     UUID.fromString(id); // validate

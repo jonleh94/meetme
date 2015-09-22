@@ -9,9 +9,10 @@ import javax.persistence.Query;
 import java.util.Collection;
 
 /**
- *
+ *..
  */
 public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> implements Dao<ID, TYPE> {
+
   protected Class<TYPE> entityClass;
 
   @PersistenceContext
