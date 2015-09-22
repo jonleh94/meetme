@@ -5,7 +5,7 @@ import java.util.Collection;
 /**
  *
  */
-public interface Dao<ID, TYPE> {
+public interface Dao<ID, TYPE> { //Interface that is able to take the Types "ID" and "TYPE"
 
   void persist(TYPE entity);
 
