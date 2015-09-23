@@ -5,7 +5,7 @@
        http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 
   <persistence-unit name="MeetMeDb" transaction-type="JTA">
-    <jta-data-source>java:jboss/datasources/meetmeDb</jta-data-source>
+    <jta-data-source>java:jboss/datasources/meetmeDb</jta-data-source> //Database source, not sure if it is right or if it needs to be changed to jdbc:h2:file:~/meetmedb
 
     <class>de.dhbw.meetme.domain.User</class>
     <class>de.dhbw.meetme.domain.UuidId</class>
