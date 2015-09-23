@@ -10,10 +10,17 @@ import java.util.Collection;
 
 /**
  *..
+ *        JpaDao constructor creates entityClass???!!!
+ *
+ *        ~ persist(TYPE entity): this method gets an PersistentObject as parameter bzw. TYPE(which inherits from PersistentObject)
+ *          and makes it persistent and manageable
+ *        ~ delete(ID id): gets the User "id" as parameter and deletes this user with the entityManager if the "id" exists in the database
  */
+
+
 public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> implements Dao<ID, TYPE> {
 
-  protected Class<TYPE> entityClass;
+  protected Class<TYPE> entityClass; //entityClass is the main class for operations, it can only be of the Type "TYPE"
 
   @PersistenceContext
   protected EntityManager entityManager;
@@ -28,8 +35,8 @@ public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> i
 
   public void delete(ID id) {
     try {
-      TYPE entity = get(id);
-      entityManager.remove(entity);
+      TYPE entity = get(id);            //declaration of the a new instance of TYPE bzw. PersistentObject
+      entityManager.remove(entity);     //delete user with  from the database
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -37,11 +44,13 @@ public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> i
 
   public TYPE get(ID id) {
     return entityManager.find(entityClass, id);
-  }
+  }  //finds user by primary key "id" and returns the entity object "TYPE"
+
 
   @SuppressWarnings("unchecked")
   public Collection<TYPE> list() {
-    Query q = entityManager.createQuery("select e from " + entityClass.getName() + " e");
+    Query q = entityManager.createQuery("select e from " + entityClass.getName() + " e");  //in tutorial this call needs a real class,
+                                                                                            // here it uses a String by "getName()"..
     return (Collection<TYPE>)q.getResultList();
   }
 
