@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  *..
- *        JpaDao constructor creates entityClass???!!!
+ *
  *
  *        ~ persist(TYPE entity): this method gets an PersistentObject as parameter bzw. TYPE(which inherits from PersistentObject)
  *          and makes it persistent and manageable
@@ -27,7 +27,7 @@ public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> i
 
   public JpaDao(Class<TYPE> entityClass) {
     this.entityClass = entityClass;
-  }
+  } //entityClass equals the "TYPE" class
 
   public void persist(TYPE entity) {
     entityManager.persist(entity);
@@ -35,7 +35,7 @@ public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> i
 
   public void delete(ID id) {
     try {
-      TYPE entity = get(id);            //declaration of the a new instance of TYPE bzw. PersistentObject
+      TYPE entity = get(id);            //declaration of the a new instance of TYPE bzw. PersistentObject(User) which is the entitty that should be deleted
       entityManager.remove(entity);     //delete user with  from the database
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -51,7 +51,7 @@ public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> i
   public Collection<TYPE> list() {
     Query q = entityManager.createQuery("select e from " + entityClass.getName() + " e");  //in tutorial this call needs a real class,
                                                                                             // here it uses a String by "getName()"..
-    return (Collection<TYPE>)q.getResultList();
+    return (Collection<TYPE>)q.getResultList();                                              //My proposal: "Select e from User e "to list all elements from the
   }
 
 }
