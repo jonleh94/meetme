@@ -1,8 +1,11 @@
 package de.dhbw.meetme.servlet;
 
 import de.dhbw.meetme.database.Transaction;
+import de.dhbw.meetme.database.dao.GeoDao;
 import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.User;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +22,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ *DONE(FELIX):
+ * I've added new variables to the USER class and tested the assignement of new variables
+ * -> JPA recognizes the new attributes perfectly and standard operations can be performed through this UserServlet :)
+ *
+ *
+ *
+ * TODO:
+ * check what's the differnce between Servelets and REST(@Jonas,Tim,Moritz why is Jörn using Servlets instead of Webservices?
+ *
+ *
+ *
+ *
  *
  */
+
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
   private static final Logger log = LoggerFactory.getLogger(UserServlet.class);
 
   @Inject UserDao userDao;
   @Inject Transaction transaction;
-
+  @Inject GeoDao geoDao;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,17 +52,32 @@ public class UserServlet extends HttpServlet {
     transaction.begin();
     Collection<User> users = userDao.list();
 
-    User user = new User();
-    user.setName("User " + users.size());
+    /** ----NEW USER IS CREATED WITH ATTRIBUTES */
+    User user = new User();       // Create a default user, with a prefixed name
+    GeoData geoData = new GeoData();              //user.setName("User " + users.size()); old style
+
+                                      //user.setActive(true);        //dummy attribute here, needs to be filled with real data later
+
+    //new method with all the seeting of varibales goes here:
+    user.setAllAttributes("blau", 0, true, "1234", "felix@hp.com", "schabi8888");
+
+    geoData.setGeolength("Länge");
+    geoData.setGeowidth("Breite");
+
+
+    log.debug(user.toString());  //little test, can be removed when everything is working
+    /** --------------------------------------*/
+    //geoDao.persist(geoData);
     userDao.persist(user);
     transaction.commit();
 
     users = new ArrayList<>(users); // cloning the read-only list so that we can add something
     users.add(user);
 
-
+    //The User.toString() is responsible for the return values of this requests, when meetmeserver/user is executed. e.g. if toString() contains more attributes of the user, the meetmeserver/user will show more values
     response.setContentType("text/html");
     response.setBufferSize(8192);
+
     try (PrintWriter out = response.getWriter()) {
       out.println("<html lang=\"en\"><head><title>Servlet Hello</title></head>");
 
@@ -70,5 +101,8 @@ public class UserServlet extends HttpServlet {
       out.println("</body></html>");
     }
   }
+
+
+
 
 }
