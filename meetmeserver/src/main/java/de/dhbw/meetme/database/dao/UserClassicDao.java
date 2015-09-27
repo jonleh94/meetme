@@ -2,11 +2,11 @@ package de.dhbw.meetme.database.dao;
 
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
-import org.hibernate.Session;
 import org.hibernate.internal.SessionImpl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
