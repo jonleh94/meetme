@@ -1,0 +1,16 @@
+a:link { text-decoration:none;color:#747474; }
+a:visited { text-decoration:none;color:#747474; }
+a:hover { text-decoration:none;background-color:#efefef; }
+a:active { text-decoration:none; background-color:#efefef; }
+
+p {color:#4b4b4b}
+
+#inhalt {width:900px; margin-left: auto; margin-right: auto;font-family:"Trebuchet MS", Helvetica, sans-serif; letter-spacing: 4px}
+
+#logo {text-align: center;font-size: 150%;color: #4b4b4b;padding-top: 30px;padding-bottom: 10px;}
+
+#navigation {text-align: center;font-size: 60%;padding-bottom: 10px;}
+
+#text {font-size: 80%;margin: 20px;letter-spacing: 1px}
+
+#footer {text-align: center; font-size: 60%;}
