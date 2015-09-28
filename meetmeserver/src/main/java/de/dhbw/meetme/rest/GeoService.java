@@ -35,7 +35,7 @@ public class GeoService {
             thisuser.setGeoWidth(latitude);
             thisuser.setGeoLength(longitude);
             transaction.commit();
-            return "Operation succesfull, updated GeoData for User: " + username;
+            return "Operation successful, updated GeoData for User: " + username;
         } else {
             return "WRONG PASSWORD";
         }
