@@ -20,7 +20,6 @@ import java.util.List;
  * You can use either this or the the other.
  * Decide yourself!
  *
- * Welche Datenbanklösung wird jetzt verwendet? H2?
  */
 public class UserClassicDao implements Dao<UuidId, User> {
     @PersistenceContext
