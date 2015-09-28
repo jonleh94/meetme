@@ -91,6 +91,7 @@ public class UserServlet extends HttpServlet {
     //new method with all the seeting of varibales goes here:
     user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender);
 
+
     log.debug(user.toString());  //little test, can be removed when everything is working
     /** --------------------------------------*/
 
