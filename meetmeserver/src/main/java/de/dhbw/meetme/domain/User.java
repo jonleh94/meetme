@@ -1,6 +1,7 @@
 package de.dhbw.meetme.domain;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,9 +36,8 @@ public class User extends PersistentObject {
 
   /** --------------------VARIABLES--------------*/
 
-    @NotNull
-    @Size(max=20)
-    private String username;
+  //@Column(unique = true) @NotNull @Size(max=20)
+  private String username;
     private String lastname;
     private String firstname;
     private String sLocation;
@@ -97,11 +97,13 @@ public class User extends PersistentObject {
 
   public String getUsername() {return username;}
 
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
   public String getGender() {return gender;}
 
   public void setGender(String gender) {this.gender = gender;}
-
-  public void setUsername(String username) {this.username = username;}
 
   //This method sets all values to the variables of one User Object
     public void setAllAttributes(String team, int rank, boolean active, String password, String email, String username, String firstname, String lastname, String sLocation, String gender ){
