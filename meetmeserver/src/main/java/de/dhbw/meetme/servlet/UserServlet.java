@@ -54,23 +54,29 @@ public class UserServlet extends HttpServlet {
 
     /** ----NEW USER IS CREATED WITH ATTRIBUTES */
     User user = new User();       // Create a default user, with a prefixed name
-    GeoData geoData = new GeoData();              //user.setName("User " + users.size()); old style
+                                 //user.setName("User " + users.size()); old style
 
                                       //user.setActive(true);        //dummy attribute here, needs to be filled with real data later
 
     //new method with all the seeting of varibales goes here:
     user.setAllAttributes("blau", 0, true, "1234", "felix@hp.com", "schabi8888");
 
-    geoData.setGeolength("Länge");
-    geoData.setGeowidth("Breite");
-
-
     log.debug(user.toString());  //little test, can be removed when everything is working
     /** --------------------------------------*/
-    //geoDao.persist(geoData);
+
     userDao.persist(user);
     transaction.commit();
 
+/**              ------------- needs to be extended and improved----------------
+    transaction.begin();
+    GeoData geoData = new GeoData();
+    geoData.setGeolength("Länge");
+    geoData.setGeowidth("Breite");
+    log.debug(geoData.toString());
+    geoDao.persist(geoData);
+    transaction.commit();
+                    ---------------------------------------------------------
+**/
     users = new ArrayList<>(users); // cloning the read-only list so that we can add something
     users.add(user);
 
