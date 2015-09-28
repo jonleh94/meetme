@@ -22,116 +22,116 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- *DONE(FELIX):
+ * DONE(FELIX):
  * I've added new variables to the USER class and tested the assignement of new variables
  * -> JPA recognizes the new attributes perfectly and standard operations can be performed through this UserServlet :)
- *
+ * <p>
  * Adding new Users though web Interface works now,
  * /register.html redirects to /user and creates a new user with the form paramters and saves it to the database
- *
- *
- *
+ * <p>
+ * <p>
+ * <p>
  * TODO:
  * check what's the differnce between Servelets and REST(@Jonas,Tim,Moritz why is Jörn using Servlets instead of Webservices?
  * implement the GEO Data, maybe a new web service is needed, because user creation in browser doent support GPS Data
- *
  */
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
-  private static final Logger log = LoggerFactory.getLogger(UserServlet.class);
+    private static final Logger log = LoggerFactory.getLogger(UserServlet.class);
 
-  @Inject UserDao userDao;
-  @Inject Transaction transaction;
-  //@Inject GeoDao geoDao;
+    @Inject
+    UserDao userDao;
+    @Inject
+    Transaction transaction;
+    //@Inject GeoDao geoDao;
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    log.debug("UserServlet get");
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    transaction.begin();
-    Collection<User> users = userDao.list();
+        log.debug("UserServlet get");
 
-    /** ----NEW USER IS CREATED WITH ATTRIBUTES */
-      User user = new User(); //Create new user
+        transaction.begin();
+        Collection<User> users = userDao.list();
 
-      /** ASSIGN THE FORM ATTRIBUTES TO LOCAL VARIRABLES*/
+        /** ----NEW USER IS CREATED WITH ATTRIBUTES */
+        User user = new User(); //Create new user
 
-      String username = request.getParameter("Username");
-    String firstName = request.getParameter("FirstName");
-      String lastName = request.getParameter("LastName");
-    String location = request.getParameter("Location");
-    String email = request.getParameter("E-mail");
-    String password = request.getParameter("Password");
-    String passwordR = request.getParameter("Passwordr");
-    String gender = request.getParameter("Gender");
-      /** -----------------*/
-
-    // check if passwords match
-    // tbd
-      if (password.equals(passwordR)) {
-      } //dummy mehtod; needs to be filled with a real check and method to resolve the error
-      else {
-      }
-
-    // select team
-      String team;
-      int i = (int) Math.floor(Math.random()*2);
-      if(i==0)
-      {
-        team = "blue";
-      }
-      else
-      {
-        team = "red";
-      }
-
-      /** SET ALL USER ATTRIBUTES */
-    user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender);
+        /** ASSIGN THE FORM ATTRIBUTES TO LOCAL VARIRABLES*/
 
 
-    log.debug(user.toString());  //little test, can be removed when everything is working
-    userDao.persist(user);
-      transaction.commit();
+        String username = request.getParameter("Username");
+        String firstName = request.getParameter("FirstName");
+        String lastName = request.getParameter("LastName");
+        String location = request.getParameter("Location");
+        String email = request.getParameter("E-mail");
+        String password = request.getParameter("Password");
+        String passwordR = request.getParameter("Passwordr");
+        String gender = request.getParameter("Gender");
+        String team;
+        /** -----------------*/
+
+        // check if passwords match
+        // tbd
+        if (password.equals(passwordR)) {
+        } //dummy mehtod; needs to be filled with a real check and method to resolve the error
+        else {
+        }
+
+        // select team
+        int i = (int) Math.floor(Math.random() * 2);
+        if (i == 0) {
+            team = "blue";
+        } else {
+            team = "red";
+        }
+
+        /** SET ALL USER ATTRIBUTES */
+        user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender);
+
+
+        log.debug(user.toString());  //little test, can be removed when everything is working
+        userDao.persist(user);
+        transaction.commit();
 
 /**              ------------- needs to be extended and improved----------------
-    transaction.begin();
-    GeoData geoData = new GeoData();
-    geoData.setGeolength("Länge");
-    geoData.setGeowidth("Breite");
-    log.debug(geoData.toString());
-    geoDao.persist(geoData);
-    transaction.commit();
-                    ---------------------------------------------------------
-**/
-    users = new ArrayList<>(users); // cloning the read-only list so that we can add something
-    users.add(user);
+ transaction.begin();
+ GeoData geoData = new GeoData();
+ geoData.setGeolength("Länge");
+ geoData.setGeowidth("Breite");
+ log.debug(geoData.toString());
+ geoDao.persist(geoData);
+ transaction.commit();
+ ---------------------------------------------------------
+ **/
+        users = new ArrayList<>(users); // cloning the read-only list so that we can add something
+        users.add(user);
 
-    //The User.toString() is responsible for the return values of this requests, when meetmeserver/user is executed. e.g. if toString() contains more attributes of the user, the meetmeserver/user will show more values
-    response.setContentType("text/html");
-    response.setBufferSize(8192);
+        //The User.toString() is responsible for the return values of this requests, when meetmeserver/user is executed. e.g. if toString() contains more attributes of the user, the meetmeserver/user will show more values
+        response.setContentType("text/html");
+        response.setBufferSize(8192);
 
-    try (PrintWriter out = response.getWriter()) {
-      out.println("<html lang=\"en\"><head><title>Servlet Hello</title></head>");
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<html lang=\"en\"><head><title>Servlet Hello</title></head>");
 
-      // then write the data of the response
-      out.println("<body  bgcolor=\"#ffffff\">"
-          + "<h2>Known users:</h2>");
+            // then write the data of the response
+            out.println("<body  bgcolor=\"#ffffff\">"
+                    + "<h2>Known users:</h2>");
 
-      for(User u: users) {
-        out.println(u + "<br/>");
-      }
+            for (User u : users) {
+                out.println(u + "<br/>");
+            }
 
-      username = request.getParameter("username");
-      if (username != null && username.length() > 0) {
-        RequestDispatcher dispatcher =
-            getServletContext().getRequestDispatcher("/response");
+            username = request.getParameter("username");
+            if (username != null && username.length() > 0) {
+                RequestDispatcher dispatcher =
+                        getServletContext().getRequestDispatcher("/response");
 
-        if (dispatcher != null) {
-          dispatcher.include(request, response);
+                if (dispatcher != null) {
+                    dispatcher.include(request, response);
+                }
+            }
+            out.println("</body></html>");
         }
-      }
-      out.println("</body></html>");
     }
-  }
 }
