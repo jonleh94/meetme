@@ -11,6 +11,12 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 
+/**
+ * Webservice to handle the HTTP request ..../api/username/password/longitude/latitude
+ * updates a User with GeoData :)
+ * works properly
+ */
+
 
 @Path("/api/login")
 @Produces({"application/json"}) // mime type
