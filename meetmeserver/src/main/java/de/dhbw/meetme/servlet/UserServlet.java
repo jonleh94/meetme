@@ -69,7 +69,7 @@ public class UserServlet extends HttpServlet {
 
     // check if passwords match
     // tbd
-    if(password != passwordR){
+    if(password.equals(passwordR)){
 
     }
     else{
