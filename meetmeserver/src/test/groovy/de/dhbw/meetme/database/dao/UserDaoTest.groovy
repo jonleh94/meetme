@@ -14,9 +14,9 @@ class UserDaoTest extends Specification {
     /**
      * Helper method
      */
-    private User createUser(UserDao dao, String name) {
+    private User createUser(UserDao dao, String usernname) {
         User u = new User();
-        u.name = name
+        u.username = usernname
         dao.persist(u);
         u
     }
@@ -53,7 +53,7 @@ class UserDaoTest extends Specification {
         then:
         foundUser
         foundUser.id == id
-        foundUser.name == "YOP"
+        foundUser.username == "YOP"
     }
 
     def testFindByName() {
