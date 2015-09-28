@@ -14,7 +14,7 @@ import java.io.Serializable;
  * Created by schabi on 26.09.2015.
  */
 
-@Entity //need to be added to persistence.xml
+@Entity
 public class GeoData extends PersistentObject {
 
     @EmbeddedId protected UuidId id; //primary k3y for this table
@@ -25,9 +25,7 @@ public class GeoData extends PersistentObject {
     public UuidId getId() {return id;}
     public void setId(UuidId id) {this.id = id;}
 
-    public String getGeolength() {
-        return geolength;
-    }
+    public String getGeolength() {return geolength;}
 
     public void setGeolength(String geolength) {
         this.geolength = geolength;
@@ -39,5 +37,12 @@ public class GeoData extends PersistentObject {
 
     public void setGeowidth(String geowidth) {
         this.geowidth = geowidth;
+    }
+
+    @Override
+    public String toString() {
+        return "GeoData{" +
+                "id='" + id + '\'' + ", Längengrad='" + getGeolength() + '\'' +", Breitengrad='" + getGeowidth() +
+                '}';
     }
 }
