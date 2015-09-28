@@ -27,6 +27,10 @@ public class UuidId implements Serializable {
     this.id = UUID.fromString(id).toString();
   } //Sets ID by taking ID as paramter and generates new UUID and comnverts it into string
 
+  public String getId() {
+    return id;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -48,6 +52,7 @@ public class UuidId implements Serializable {
         "id=" + id +
         '}';
   }
+
 
   public String asString() {
     return id;
