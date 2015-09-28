@@ -43,7 +43,7 @@ public class UserServlet extends HttpServlet {
 
   @Inject UserDao userDao;
   @Inject Transaction transaction;
-  @Inject GeoDao geoDao;
+  //@Inject GeoDao geoDao;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
