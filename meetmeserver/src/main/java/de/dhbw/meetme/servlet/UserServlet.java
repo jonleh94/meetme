@@ -67,6 +67,7 @@ public class UserServlet extends HttpServlet {
     String passwordR = request.getParameter("Passwordr");
     String gender = request.getParameter("Gender");
 
+
     // check if passwords match
     // tbd
     if(password.equals(passwordR)){
