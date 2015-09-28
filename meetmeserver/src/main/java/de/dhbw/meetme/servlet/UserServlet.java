@@ -58,8 +58,38 @@ public class UserServlet extends HttpServlet {
 
                                       //user.setActive(true);        //dummy attribute here, needs to be filled with real data later
 
+    String username = request.getParameter("Username");
+    String firstName = request.getParameter("FirstName");
+    String lastName = request.getParameter("LastName ");
+    String location = request.getParameter("Location");
+    String email = request.getParameter("E-mail");
+    String password = request.getParameter("Password");
+    String passwordR = request.getParameter("Passwordr");
+    String gender = request.getParameter("Gender");
+
+    // check if passwords match
+    // tbd
+    if(password != passwordR){
+
+    }
+    else{
+
+    }
+
+    // select team
+      String team;
+      int i = (int) Math.floor(Math.random()*2);
+      if(i==0)
+      {
+        team = "blue";
+      }
+      else
+      {
+        team = "red";
+      }
+
     //new method with all the seeting of varibales goes here:
-    user.setAllAttributes("blau", 0, true, "1234", "felix@hp.com", "schabi8888");
+    user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender);
 
     log.debug(user.toString());  //little test, can be removed when everything is working
     /** --------------------------------------*/
@@ -95,7 +125,7 @@ public class UserServlet extends HttpServlet {
         out.println(u + "<br/>");
       }
 
-      String username = request.getParameter("username");
+      username = request.getParameter("username");
       if (username != null && username.length() > 0) {
         RequestDispatcher dispatcher =
             getServletContext().getRequestDispatcher("/response");
