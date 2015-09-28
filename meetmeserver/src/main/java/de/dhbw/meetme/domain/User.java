@@ -37,12 +37,19 @@ public class User extends PersistentObject {
 
     @NotNull
     @Size(max=20)
-    private String name;
+    private String username;
+    private String lastname;
+    private String firstname;
+    private String sLocation;
+    private String geoLength;
+    private String geoWidth;
     private String email;
     private String team;
     private String password;
     private boolean active; //true if user is playing the game; false if not
     private int rank;    //Leaderboard rank
+    private String gender;
+
 
   /**----------------------------------------------------------*/
 
@@ -68,25 +75,52 @@ public class User extends PersistentObject {
 
     public void setEmail(String email) {this.email = email;}
 
-    public String getName() {return name;}
+  public String getGeoWidth() {return geoWidth;}
 
-    public void setName(String name) {this.name = name;}
+  public void setGeoWidth(String geoWidth) {this.geoWidth = geoWidth;}
+
+  public String getGeoLength() {return geoLength;}
+
+  public void setGeoLength(String geoLength) {this.geoLength = geoLength;}
+
+  public String getLastname() {return lastname;}
+
+  public void setLastname(String lastname) {this.lastname = lastname;}
+
+  public String getFirstname() {return firstname;}
+
+  public void setFirstname(String firstname) {this.firstname = firstname;}
+
+  public String getsLocation() {return sLocation;}
+
+  public void setsLocation(String sLocation) {this.sLocation = sLocation;}
+
+  public String getUsername() {return username;}
+
+  public String getGender() {return gender;}
+
+  public void setGender(String gender) {this.gender = gender;}
+
+  public void setUsername(String username) {this.username = username;}
 
   //This method sets all values to the variables of one User Object
-    public void setAllAttributes(String team, int rank, boolean active, String password, String email, String name){
+    public void setAllAttributes(boolean active, String username, String password, String firstname, String lastname, String email, String sLocation, String gender ){
       setActive(active);
-      setName(name);
-      setEmail(email);
+      setUsername(username);
       setPassword(password);
-      setRank(rank);
-      setTeam(team);
+      setFirstname(firstname);
+      setLastname(lastname);
+      setEmail(email);
+      setsLocation(sLocation);
+      setGender(gender);
+
     }
     /**-------------------------------**/
 
   @Override
   public String toString() {
     return "User{" +
-        "id='" + id + '\'' +   //", name='" + name + '\''
+        "id='" + id + '\'' +  ", Username='" + username + '\'' +
     '}';
   }
 }
