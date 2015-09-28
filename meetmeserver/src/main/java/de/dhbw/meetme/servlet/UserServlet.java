@@ -1,7 +1,7 @@
 package de.dhbw.meetme.servlet;
 
 import de.dhbw.meetme.database.Transaction;
-import de.dhbw.meetme.database.dao.GeoDao;
+//import de.dhbw.meetme.database.dao.GeoDao;
 import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.User;

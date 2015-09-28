@@ -8,7 +8,7 @@ import org.hello.R;
 public class HelloActivity extends Activity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(hBundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hello_layout);
     }
