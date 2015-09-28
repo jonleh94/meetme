@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 
-@Entity // also add to persistence.xml !! -> seems like it is already in the xml, maybe comment needs to be removed
+@Entity
 @XmlRootElement // needed for REST JSON marshalling
 public class User extends PersistentObject {
 
