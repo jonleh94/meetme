@@ -46,7 +46,7 @@ public class UserServlet extends HttpServlet {
   //@Inject GeoDao geoDao;
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     log.debug("UserServlet get");
 
     transaction.begin();
@@ -58,19 +58,20 @@ public class UserServlet extends HttpServlet {
       /** ASSIGN THE FORM ATTRIBUTES TO LOCAL VARIRABLES*/
 
       String username = request.getParameter("Username");
-    String firstName = request.getParameter("FirstName");
+      String firstName = request.getParameter("FirstName");
       String lastName = request.getParameter("LastName");
-    String location = request.getParameter("Location");
-    String email = request.getParameter("E-mail");
-    String password = request.getParameter("Password");
-    String passwordR = request.getParameter("Passwordr");
-    String gender = request.getParameter("Gender");
+      String location = request.getParameter("Location");
+      String email = request.getParameter("E-mail");
+      Integer password = request.getParameter("Password").hashCode();
+      Integer passwordR = request.getParameter("Passwordr").hashCode();
+      String gender = request.getParameter("Gender");
       /** -----------------*/
+
 
     // check if passwords match
     // tbd
       if (password.equals(passwordR)) {
-      } //dummy mehtod; needs to be filled with a real check and method to resolve the error
+      } //dummy method; needs to be filled with a real check and method to resolve the error
       else {
       }
 

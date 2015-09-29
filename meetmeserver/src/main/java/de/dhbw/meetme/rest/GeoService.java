@@ -35,11 +35,13 @@ public class GeoService {
     public String put(@PathParam("username") String username, @PathParam("password") String password, @PathParam("longitude") String longitude, @PathParam("latitude") String latitude) {
         transaction.begin();
         log.debug("Get user " + username);
-        User thisuser = userDao.findByUserName(username); //find the username and return the User Object from the database and cast the collection to User
-        if ((thisuser.getPassword()).equals(password)) {
+        User thisUser = userDao.findByUserName(username); //find the username and return the User Object from the database and cast the collection to User
 
-            thisuser.setGeoWidth(latitude);
-            thisuser.setGeoLength(longitude);
+
+        if ((thisUser.getPassword()).equals((password).hashCode())) {
+
+            thisUser.setGeoWidth(latitude);
+            thisUser.setGeoLength(longitude);
             transaction.commit();
             return "Operation successful, updated GeoData for User: " + username;
         } else {
