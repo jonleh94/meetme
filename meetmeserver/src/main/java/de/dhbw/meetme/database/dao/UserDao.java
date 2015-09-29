@@ -17,7 +17,6 @@ import java.util.Collection;
  * <p>
  * Decide yourself which one you want to use.
  * You may even mix both approaches.
- *
  */
 @ApplicationScoped
 public class UserDao extends JpaDao<UuidId, User> {

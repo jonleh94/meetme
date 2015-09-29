@@ -7,11 +7,11 @@ import java.util.Collection;
  */
 public interface Dao<ID, TYPE> { //Interface that is able to take the Types "ID" and "TYPE"
 
-  void persist(TYPE entity);
+    void persist(TYPE entity);
 
-  void delete(ID id);
+    void delete(ID id);
 
-  TYPE get(ID id);
+    TYPE get(ID id);
 
-  Collection<TYPE> list();
+    Collection<TYPE> list();
 }
