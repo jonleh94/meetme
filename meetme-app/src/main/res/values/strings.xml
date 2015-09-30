@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Android Maven</string>
+    <string name="breitengrad">Latitude/Breitengrad:</string>
+    <string name="laengengrad">Longitude/Längengrad:</string>
+    <string name="speichernDialogTitel">Speichern</string>
+    <string name="keinGPS">Bitte aktivieren Sie ihr GPS!</string>
+    <string name="hoehe">Altitude/Höhe:</string>
+    <string name="start">Start</string>
+    <string name="stopp">Stopp</string>
+    <string name="speichern">Speichern</string>
+    <string name="getuserlist">Userliste</string>
+    <string name="ok">Ok</string>
+    <string name="schließen">zurück</string>
+    <string name="titel">Generieren des Standortes</string>
+    <string name="userlist">Userliste</string>
 </resources>
