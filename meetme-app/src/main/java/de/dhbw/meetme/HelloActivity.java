@@ -129,30 +129,6 @@ public class HelloActivity extends Activity implements LocationListener, View.On
 
     }
 
-    /*public class GetDaten {
-
-        private void callClient() {
-           // setContentView(R.layout.ulisten);
-            private TextView anzeigeuserlist;
-            //anzeigeuserlist = (TextView) this.findViewById(R.id.userlist);
-            Client c = ClientBuilder.newClient();
-            WebTarget target = c.target(http://localhost:8087/meetmeserver/api");
-            String responseMsg = target.path("user/list").request().get(String.class);
-            //Toast.makeText(this, responseMsg, Toast.LENGTH_LONG).show();
-            anzeigeuserlist.setText(responseMsg);
-
-        }
-            Button zurueck = (Button) this.findViewById(R.id.listeschließen);
-            zurueck.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    setContentView(R.layout.layout2);
-                }
-
-
-            //in textview get text
-        }
-    }*/
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -300,5 +276,30 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    /*public class GetDaten {
+
+        private void callClient() {
+           // setContentView(R.layout.ulisten);
+            private TextView anzeigeuserlist;
+            //anzeigeuserlist = (TextView) this.findViewById(R.id.userlist);
+            Client c = ClientBuilder.newClient();
+            WebTarget target = c.target(http://localhost:8087/meetmeserver/api");
+            String responseMsg = target.path("user/list").request().get(String.class);
+            //Toast.makeText(this, responseMsg, Toast.LENGTH_LONG).show();
+            anzeigeuserlist.setText(responseMsg);
+
+        }
+            Button zurueck = (Button) this.findViewById(R.id.listeschließen);
+            zurueck.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    setContentView(R.layout.layout2);
+                }
+
+
+            //in textview get text
+        }
+    }*/
+
 }
 

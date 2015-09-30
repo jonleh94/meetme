@@ -16,7 +16,7 @@
             android:id="@+id/userlist"/>
     <Button
             android:id="@+id/listeschließen"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/schließen">
 
