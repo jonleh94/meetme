@@ -106,7 +106,7 @@ public class User extends PersistentObject {
   public void setGender(String gender) {this.gender = gender;}
 
   //This method sets all values to the variables of one User Object
-    public void setAllAttributes(String team, int rank, boolean active, int password, String email, String username, String firstname, String lastname, String sLocation, String gender ){
+    public void setAllAttributes(String team, int rank, boolean active, Integer password, String email, String username, String firstname, String lastname, String sLocation, String gender ){
       setActive(active);
       setTeam(team);
       setRank(rank);
