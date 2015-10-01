@@ -99,6 +99,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         //Clear-Button
         clearButton = (Button) this.findViewById(R.id.button5);
         clearButton.setEnabled(false);
+        clearButton.setOnClickListener(this);
 
         datenSammeln = false;
         positionen = new ArrayList<Location>();
@@ -120,7 +121,9 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             speichernButton.setEnabled(false);
             userlistButton.setEnabled(true);
             clearButton.setEnabled(true);
-            datenSammeln = true;}
+            datenSammeln = true;
+            sendGPSData();
+        }
         else if (v == stoppButton) {
             startButton.setEnabled(true);
             stoppButton.setEnabled(false);
@@ -153,7 +156,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             speichernButton.setEnabled(false);
             userlistButton.setEnabled(false);
             datenSammeln = false;
-            anzeigeUserlist.getText().clear();
+            anzeigeUserlist.setText("");
         }
     }
 
@@ -207,7 +210,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         }
     }
 
-    protected void sendGPSData(String laenge, String breite){
+    protected void sendGPSData(){ //(String laenge, String breite){
 
         Log.e(TAG, "run client");
         DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -215,8 +218,9 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             // specify the host, protocol, and port
             HttpHost target = new HttpHost(HOSTNAME, PORT, "http");
             // specify the put request
-            HttpPut putRequest = new HttpPut("/meetmeserver/api/login/schabi88/1234" + laenge + "/" + breite);
+            HttpPut putRequest = new HttpPut("/meetmeserver/api/login/josie/josie/55/55"); // + laenge + "/" + breite);
             HttpResponse httpResponse = httpclient.execute(target, putRequest);
+            httpResponse.toString();
 
         } catch (Exception e) {
             Log.e(TAG, "Error: " + e);
@@ -246,7 +250,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         double laenge = loc.getLongitude();
         double breite = loc.getLatitude();
 
-        sendGPSData(Double.toString(laenge), Double.toString(breite));
+        // (Double.toString(laenge), Double.toString(breite));
 
         anzeigeBreite.setText(Location.convert(breite, Location.FORMAT_DEGREES));
         anzeigeLaenge.setText(Location.convert(laenge, Location.FORMAT_DEGREES));
