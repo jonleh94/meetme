@@ -17,7 +17,6 @@ import java.util.Collection;
  * <p>
  * Decide yourself which one you want to use.
  * You may even mix both approaches.
- *
  */
 @ApplicationScoped
 public class UserDao extends JpaDao<UuidId, User> {
@@ -25,12 +24,16 @@ public class UserDao extends JpaDao<UuidId, User> {
         super(User.class);
     }
 
-    @SuppressWarnings("unchecked")
-    Collection<User> findByName(String username) {
-        Query query = entityManager.createQuery("from User u where u.username = :username");
+    //@SuppressWarnings("unchecked")
+    public Collection<User> findByName(String username) {
+        Query query = entityManager.createQuery("SELECT u from User u where u.username = :username"); //prev.: from User u where u.username = :username"
         query.setParameter("username", username);
         return (Collection<User>) query.getResultList();
     }
 
-
+    public User findByUserName(String username) {
+        Query query = entityManager.createQuery("SELECT u from User u where u.username = :username"); //prev.: from User u where u.username = :username"
+        query.setParameter("username", username);
+        return (User) query.getResultList().get(0);
+    }
 }

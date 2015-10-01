@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 
 @ApplicationScoped
-public class GeoDao extends JpaDao{
+public class GeoDao extends JpaDao<UuidId, GeoData> {
 
     public GeoDao() {
         super(GeoData.class);

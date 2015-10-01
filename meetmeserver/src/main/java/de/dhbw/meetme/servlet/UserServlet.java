@@ -26,14 +26,14 @@ import java.util.Collection;
  * I've added new variables to the USER class and tested the assignement of new variables
  * -> JPA recognizes the new attributes perfectly and standard operations can be performed through this UserServlet :)
  *
+ * Adding new Users though web Interface works now,
+ * /register.html redirects to /user and creates a new user with the form paramters and saves it to the database
+ *
  *
  *
  * TODO:
  * check what's the differnce between Servelets and REST(@Jonas,Tim,Moritz why is Jörn using Servlets instead of Webservices?
- *
- *
- *
- *
+ * implement the GEO Data, maybe a new web service is needed, because user creation in browser doent support GPS Data
  *
  */
 
@@ -46,36 +46,34 @@ public class UserServlet extends HttpServlet {
   //@Inject GeoDao geoDao;
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     log.debug("UserServlet get");
 
     transaction.begin();
     Collection<User> users = userDao.list();
 
     /** ----NEW USER IS CREATED WITH ATTRIBUTES */
-    User user = new User();       // Create a default user, with a prefixed name
-                                 //user.setName("User " + users.size()); old style
+      User user = new User(); //Create new user
 
-                                      //user.setActive(true);        //dummy attribute here, needs to be filled with real data later
+      /** ASSIGN THE FORM ATTRIBUTES TO LOCAL VARIRABLES*/
 
-    String username = request.getParameter("Username");
-    String firstName = request.getParameter("FirstName");
-    String lastName = request.getParameter("LastName ");
-    String location = request.getParameter("Location");
-    String email = request.getParameter("E-mail");
-    String password = request.getParameter("Password");
-    String passwordR = request.getParameter("Passwordr");
-    String gender = request.getParameter("Gender");
+      String username = request.getParameter("Username");
+      String firstName = request.getParameter("FirstName");
+      String lastName = request.getParameter("LastName");
+      String location = request.getParameter("Location");
+      String email = request.getParameter("E-mail");
+      Integer password = request.getParameter("Password").hashCode();
+      Integer passwordR = request.getParameter("Passwordr").hashCode();
+      String gender = request.getParameter("Gender");
+      /** -----------------*/
 
 
     // check if passwords match
     // tbd
-    if(password.equals(passwordR)){
-
-    }
-    else{
-
-    }
+      if (password.equals(passwordR)) {
+      } //dummy method; needs to be filled with a real check and method to resolve the error
+      else {
+      }
 
     // select team
       String team;
@@ -89,15 +87,13 @@ public class UserServlet extends HttpServlet {
         team = "red";
       }
 
-    //new method with all the seeting of varibales goes here:
+      /** SET ALL USER ATTRIBUTES */
     user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender);
 
 
     log.debug(user.toString());  //little test, can be removed when everything is working
-    /** --------------------------------------*/
-
     userDao.persist(user);
-    transaction.commit();
+      transaction.commit();
 
 /**              ------------- needs to be extended and improved----------------
     transaction.begin();
@@ -139,8 +135,4 @@ public class UserServlet extends HttpServlet {
       out.println("</body></html>");
     }
   }
-
-
-
-
 }
