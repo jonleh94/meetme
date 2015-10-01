@@ -113,26 +113,43 @@ public class UserServlet extends HttpServlet {
     response.setBufferSize(8192);
 
     try (PrintWriter out = response.getWriter()) {
-      out.println("<html lang=\"en\"><head><title>Servlet Hello</title></head>");
-
-      // then write the data of the response
-      out.println("<body  bgcolor=\"#ffffff\">"
-          + "<h2>Known users:</h2>");
-
-      for(User u: users) {
-        out.println(u + "<br/>");
-      }
-
-      username = request.getParameter("username");
-      if (username != null && username.length() > 0) {
-        RequestDispatcher dispatcher =
-            getServletContext().getRequestDispatcher("/response");
-
-        if (dispatcher != null) {
-          dispatcher.include(request, response);
-        }
-      }
-      out.println("</body></html>");
+      out.println("<html>\n" +
+              "\n" +
+              "<head>\n" +
+              "    <meta charset=\"UTF-8\">\n" +
+              "    <title>thx</title>\n" +
+              "    <meta name=\"description\" content=\"\">\n" +
+              "    <meta name=\"author\" content=\"\">\n" +
+              "    <meta name=\"keywords\" content=\"\">\n" +
+              "\n" +
+              "    <link href=\"style.css\" type=\"text/css\" rel=\"stylesheet\">\n" +
+              "</head>\n" +
+              "\n" +
+              "<body>\n" +
+              "\n" +
+              "<div id=\"inhalt\">\n" +
+              "\n" +
+              "    <div id=\"logo\">\n" +
+              "        <img src=\"am.jpeg\">\n" +
+              "        </br>\n" +
+              "\n" +
+              "    </div>\n" +
+              "\n" +
+              "\n" +
+              "\n" +
+              "    <div id=\"text\">\n" +
+              "        <p><center><h1> Danke für die Registrierung, "+ username+"!"+"</h1>  </br>\n" +
+              "        -Agile Monkeys-</center></p></br>\n" +
+              "    </div>\n" +
+              "    <div id=\"footer\">\n" +
+              "        <a href=\"http://www.facebook.com\"><img src=\"facebook.png\"></a><a href=\"http://www.twitter.com\"><img src=\"twitter.png\"></a></br>\n" +
+              "        <a href=\"#\">Impressum</a>\n" +
+              "    </div>\n" +
+              "\n" +
+              "</div>\n" +
+              "\n" +
+              "</body>\n" +
+              "</html>");
     }
   }
 }
