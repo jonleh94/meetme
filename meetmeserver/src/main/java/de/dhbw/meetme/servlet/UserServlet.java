@@ -138,7 +138,7 @@ public class UserServlet extends HttpServlet {
               "\n" +
               "\n" +
               "    <div id=\"text\">\n" +
-              "        <p><center><h1> Danke für die Registrierung, "+ username+"!"+"</h1>  </br>\n" +
+              "        <p><center><h1> Thank you "+ username+" for joining the meetme movement!"+"</h1>  </br>\n" +
               "        -Agile Monkeys-</center></p></br>\n" +
               "    </div>\n" +
               "    <div id=\"footer\">\n" +
