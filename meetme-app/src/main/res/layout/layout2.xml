@@ -91,4 +91,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
     </Button>
+    <Button
+            android:text="@string/clear"
+            android:id="@+id/button5"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content">
+    </Button>
+    <EditText
+            android:layout_width="138dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/textViewUserlist"/>
 </LinearLayout>
