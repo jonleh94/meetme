@@ -7,9 +7,9 @@
     <string name="keinGPS">Bitte aktivieren Sie ihr GPS!</string>
     <string name="hoehe">Altitude/Höhe:</string>
     <string name="start">Start</string>
-    <string name="stopp">Stopp</string>
-    <string name="speichern">Speichern</string>
-    <string name="getuserlist">Userliste</string>
+    <string name="stopp">Stop</string>
+    <string name="speichern">Save</string>
+    <string name="getuserlist">Userlist</string>
     <string name="ok">Ok</string>
     <string name="schließen">zurück</string>
     <string name="titel">Generieren des Standortes</string>
