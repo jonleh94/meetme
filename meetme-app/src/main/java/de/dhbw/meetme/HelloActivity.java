@@ -17,7 +17,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+
+import org.apache.http.client.methods.HttpPut;
 import org.hello.R;
+
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -42,21 +46,21 @@ import android.widget.Toast;
  * Created by kraftna on 29.09.2015.
  */
 public class HelloActivity extends Activity implements LocationListener, View.OnClickListener {
+    private static final String HOSTNAME = "10.0.2.2";
+    private static final int PORT = 8087;
+    private static final String TAG = "HelloActivity";
     private LocationManager locationManager;
     private TextView anzeigeLaenge;
     private TextView anzeigeBreite;
     private TextView anzeigeHoehe;
-    //private TextView anzeigeUserlist;
-    private static final String HOSTNAME = "localhost";
-    private static final int PORT = 8087;
-    private static final String TAG = "HelloActivity";
-
+    private EditText anzeigeUserlist;
     private SimpleDateFormat gpxZeitFormat;
 
     private Button startButton;
     private Button stoppButton;
     private Button speichernButton;
     private Button userlistButton;
+    private Button clearButton;
     private boolean datenSammeln;
     private List<Location> positionen;
 
@@ -71,7 +75,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         anzeigeBreite = (TextView) this.findViewById(R.id.textViewBreite);
         anzeigeLaenge = (TextView) this.findViewById(R.id.textViewLaenge);
         anzeigeHoehe = (TextView) this.findViewById(R.id.textViewHoehe);
-        //anzeigeUserlist = (TextView) this.findViewById(R.id.textViewUserlist);
+        anzeigeUserlist = (EditText) this.findViewById(R.id.textViewUserlist);
 
         // Testen, ob GPS verfügbar, wenn nicht soll eine Meldung ausgegeben werden und die App beendet
         if (!isProviderEnabled()) {
@@ -92,6 +96,9 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         //Userlist-Button
         userlistButton = (Button) this.findViewById(R.id.button4);
         userlistButton.setOnClickListener(this);
+        //Clear-Button
+        clearButton = (Button) this.findViewById(R.id.button5);
+        clearButton.setEnabled(false);
 
         datenSammeln = false;
         positionen = new ArrayList<Location>();
@@ -112,18 +119,21 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             stoppButton.setEnabled(true);
             speichernButton.setEnabled(false);
             userlistButton.setEnabled(true);
+            clearButton.setEnabled(true);
             datenSammeln = true;}
         else if (v == stoppButton) {
             startButton.setEnabled(true);
             stoppButton.setEnabled(false);
             speichernButton.setEnabled(true);
             userlistButton.setEnabled(true);
+            clearButton.setEnabled(true);
             datenSammeln = false;}
         else if (v == speichernButton) {
             startButton.setEnabled(true);
             stoppButton.setEnabled(false);
             speichernButton.setEnabled(false);
             userlistButton.setEnabled(true);
+            clearButton.setEnabled(true);
             datenSammeln = false;
             datenSpeichern();}
        else if(v == userlistButton){
@@ -132,12 +142,50 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             stoppButton.setEnabled(false);
             speichernButton.setEnabled(false);
             datenSammeln = false;
-            getDaten();
+           String test =  getDaten();
+            anzeigeUserlist.setText(test);
+            clearButton.setEnabled(true);
             }
+        else if(v == clearButton){
+            clearButton.setEnabled(false);
+            startButton.setEnabled(true);
+            stoppButton.setEnabled(false);
+            speichernButton.setEnabled(false);
+            userlistButton.setEnabled(false);
+            datenSammeln = false;
+            anzeigeUserlist.getText().clear();
+        }
     }
 
     //Userliste bekommen
-    protected void getDaten(){
+    protected String getDaten(){
+   /**     final TextView mTextView = (TextView) findViewById(R.id.text);
+
+
+// Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://localhost:8087/meetmeserver/api/user/list";
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        mTextView.setText("Response is: "+ response.substring(0,500));
+                    }
+                },
+                new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mTextView.setText("That didn't work!");
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }*/
+
+
         Log.e(TAG, "run client");
         DefaultHttpClient httpclient = new DefaultHttpClient();
         try {
@@ -147,8 +195,28 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             HttpGet getRequest = new HttpGet("/meetmeserver/api/user/list");
             HttpResponse httpResponse = httpclient.execute(target, getRequest);
             HttpEntity entity = httpResponse.getEntity();
-            Log.e(TAG, EntityUtils.toString(entity));
-            Toast.makeText(this, "Userlist wird abgerufen, Verbindung steht", Toast.LENGTH_SHORT).show();
+           //Log.e(TAG, EntityUtils.toString(entity));
+            return EntityUtils.toString(entity);
+            //Toast.makeText(this, "Userlist wird abgerufen, Verbindung steht", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error: " + e);
+            e.printStackTrace(System.out);
+            return e.toString();
+            //Toast.makeText(this, "keine Verbindung zum Browser", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void sendGPSData(String laenge, String breite){
+
+        Log.e(TAG, "run client");
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        try {
+            // specify the host, protocol, and port
+            HttpHost target = new HttpHost(HOSTNAME, PORT, "http");
+            // specify the put request
+            HttpPut putRequest = new HttpPut("/meetmeserver/api/login/schabi88/1234" + laenge + "/" + breite);
+            HttpResponse httpResponse = httpclient.execute(target, putRequest);
 
         } catch (Exception e) {
             Log.e(TAG, "Error: " + e);
@@ -156,6 +224,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             Toast.makeText(this, "keine Verbindung zum Browser", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @Override
     protected void onResume() {
@@ -176,6 +245,8 @@ public class HelloActivity extends Activity implements LocationListener, View.On
 
         double laenge = loc.getLongitude();
         double breite = loc.getLatitude();
+
+        sendGPSData(Double.toString(laenge), Double.toString(breite));
 
         anzeigeBreite.setText(Location.convert(breite, Location.FORMAT_DEGREES));
         anzeigeLaenge.setText(Location.convert(laenge, Location.FORMAT_DEGREES));
