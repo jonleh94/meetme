@@ -31,14 +31,20 @@ public class UserService {
     @GET
     public Collection<User> list() {
         log.debug("List users");
-        return userDao.list();
+        transaction.begin();
+        Collection<User> users = userDao.list();
+        transaction.commit();
+        return users;
     }
 
     @Path("/get/{id}")
     @GET
     public User get(@PathParam("id") String id) {
         log.debug("Get user " + id);
-        return userDao.get(UuidId.fromString(id));
+        transaction.begin();
+        User user = userDao.get(UuidId.fromString(id));
+        transaction.commit();
+        return user;
     }
 
 
@@ -54,8 +60,9 @@ public class UserService {
     @Path("/save")
     @PUT
     public void save(@PathParam("user") User user) {
-        userDao.persist(user);
         log.debug("Save user " + user);
+        transaction.begin();
+        userDao.persist(user);
+        transaction.commit();
     }
-
 }
