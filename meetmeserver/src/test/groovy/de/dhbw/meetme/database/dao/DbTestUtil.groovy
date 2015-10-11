@@ -20,7 +20,7 @@ public class DbTestUtil {
 
   def initDb() {
     Class.forName("org.h2.Driver");
-    connection = DriverManager.getConnection("jdbc:h2:mem:unit-testing-jpa", "sa", "");
+    connection = DriverManager.getConnection("jdbc:h2:mem:unit-testing-jpa", "sa", ""); //In Memory Datenbak, die im RAM liegt
     emFactory = Persistence.createEntityManagerFactory("testPU");
     createEntityManager()
   }

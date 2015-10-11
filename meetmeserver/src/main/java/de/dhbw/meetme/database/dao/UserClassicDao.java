@@ -2,11 +2,11 @@ package de.dhbw.meetme.database.dao;
 
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
-import org.hibernate.Session;
 import org.hibernate.internal.SessionImpl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +20,6 @@ import java.util.List;
  * You can use either this or the the other.
  * Decide yourself!
  *
- * Welche Datenbanklösung wird jetzt verwendet? H2?
  */
 public class UserClassicDao implements Dao<UuidId, User> {
     @PersistenceContext
@@ -41,7 +40,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
         try {
             statement = con.prepareStatement("insert into user (id, name) values (?, ?)");
             statement.setString(1, entity.getId().asString());
-            statement.setString(2, entity.getName());
+            statement.setString(2, entity.getUsername());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -94,7 +93,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
             }
             user = new User();
             user.setId(id);
-            user.setName(result.getString(2));
+            user.setUsername(result.getString(2));
 
             result.close();
             statement.close();
@@ -130,7 +129,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
             while(result.next()) {
                 User user = new User();
                 user.setId(UuidId.fromString(result.getString(1)));
-                user.setName(result.getString(2));
+                user.setUsername(result.getString(2));
                 users.add(user);
             }
             result.close();
@@ -168,7 +167,7 @@ public class UserClassicDao implements Dao<UuidId, User> {
             while(result.next()) {
                 User user = new User();
                 user.setId(UuidId.fromString(result.getString(1)));
-                user.setName(result.getString(2));
+                user.setUsername(result.getString(2));
                 users.add(user);
             }
             result.close();

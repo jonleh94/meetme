@@ -10,6 +10,7 @@
         <class>de.dhbw.meetme.domain.User</class>
         <class>de.dhbw.meetme.domain.UuidId</class>
         <class>de.dhbw.meetme.domain.PersistentObject</class>
+        <class>de.dhbw.meetme.domain.GeoData</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

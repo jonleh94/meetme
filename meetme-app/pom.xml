@@ -25,6 +25,12 @@
             <version>4.1.1.4</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.21</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -36,6 +42,7 @@
                 <configuration>
                     <sdk>
                         <platform>17</platform>
+                        <platform>21</platform>
                     </sdk>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
