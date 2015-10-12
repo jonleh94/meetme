@@ -41,3 +41,6 @@ Thumbs.db
 .idea
 *.iml
 target
+
+# Android SDK generated files #
+gen-external-apklibs
