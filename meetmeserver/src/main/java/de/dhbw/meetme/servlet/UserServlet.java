@@ -29,12 +29,6 @@ import java.util.Collection;
  * Adding new Users though web Interface works now,
  * /register.html redirects to /user and creates a new user with the form paramters and saves it to the database
  *
- *
- *
- * TODO:
- * check what's the differnce between Servelets and REST(@Jonas,Tim,Moritz why is Jörn using Servlets instead of Webservices?
- * implement the GEO Data, maybe a new web service is needed, because user creation in browser doent support GPS Data
- *
  */
 
 @WebServlet("/user")
@@ -43,17 +37,18 @@ public class UserServlet extends HttpServlet {
 
   @Inject UserDao userDao;
   @Inject Transaction transaction;
-  //@Inject GeoDao geoDao;
+
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     log.debug("UserServlet get");
 
     transaction.begin();
-    Collection<User> users = userDao.list();
+      User user = new User(); //Create new user
+   Collection<User> users = userDao.list();
 
     /** ----NEW USER IS CREATED WITH ATTRIBUTES */
-      User user = new User(); //Create new user
+
 
       /** ASSIGN THE FORM ATTRIBUTES TO LOCAL VARIRABLES*/
 
@@ -65,6 +60,7 @@ public class UserServlet extends HttpServlet {
       Integer password = request.getParameter("Password").hashCode();
       Integer passwordR = request.getParameter("Passwordr").hashCode();
       String gender = request.getParameter("Gender");
+      String meetmecode = "testcode";
       /** -----------------*/
 
 
@@ -88,23 +84,16 @@ public class UserServlet extends HttpServlet {
       }
 
       /** SET ALL USER ATTRIBUTES */
-    user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender);
+
+    user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender, meetmecode);
 
 
     log.debug(user.toString());  //little test, can be removed when everything is working
     userDao.persist(user);
       transaction.commit();
 
-/**              ------------- needs to be extended and improved----------------
-    transaction.begin();
-    GeoData geoData = new GeoData();
-    geoData.setGeolength("Länge");
-    geoData.setGeowidth("Breite");
-    log.debug(geoData.toString());
-    geoDao.persist(geoData);
-    transaction.commit();
-                    ---------------------------------------------------------
-**/
+
+
     users = new ArrayList<>(users); // cloning the read-only list so that we can add something
     users.add(user);
 
