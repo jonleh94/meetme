@@ -6,10 +6,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * structure makes sense..
- * Dont get why the UUID objects are converted to Strings.
- * <p>
- * Is the SetId just existing for changing ID's later after user is created with an ID?
+ *
  */
 @Embeddable
 public class UuidId implements Serializable {
