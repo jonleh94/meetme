@@ -1,5 +1,6 @@
 package de.dhbw.meetme.database.dao;
 
+import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 
@@ -20,6 +21,7 @@ import java.util.Collection;
  */
 @ApplicationScoped
 public class UserDao extends JpaDao<UuidId, User> {
+
     public UserDao() {
         super(User.class);
     }
@@ -31,6 +33,9 @@ public class UserDao extends JpaDao<UuidId, User> {
         return (Collection<User>) query.getResultList();
     }
 
+    /**
+     * This method represents the same method as above, but returns just ONE user object instead of a collection
+     */
     public User findByUserName(String username) {
         Query query = entityManager.createQuery("SELECT u from User u where u.username = :username"); //prev.: from User u where u.username = :username"
         query.setParameter("username", username);
