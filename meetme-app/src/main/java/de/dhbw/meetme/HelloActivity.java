@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.hello.R;
 
@@ -218,10 +219,15 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             // specify the host, protocol, and port
             HttpHost target = new HttpHost(HOSTNAME, PORT, "http");
             // specify the put request
-            HttpPut putRequest = new HttpPut("/meetmeserver/api/login/josie/josie/55/55"); // + laenge + "/" + breite);
-            HttpResponse httpResponse = httpclient.execute(target, putRequest);
-            httpResponse.toString();
+             HttpPut putRequest = new HttpPut("/meetmeserver/api/login/josie/josie/55/55"); // + laenge + "/" + breite);
+             HttpResponse httpResponse = httpclient.execute(target, putRequest);
+             httpResponse.toString();
 
+            // specify the push request
+           /* HttpPost postRequest = new HttpPost("/meetmeserver/api/login/josie/josie/55/55");
+            HttpResponse httpResponse = httpclient.execute(target, postRequest);
+            httpResponse.toString();
+*/
         } catch (Exception e) {
             Log.e(TAG, "Error: " + e);
             e.printStackTrace(System.out);
