@@ -15,4 +15,7 @@
     <string name="clear">Clear</string>
     <string name="titel">Generieren des Standortes</string>
     <string name="userlist">Userliste</string>
+    <string name="nextlayout">show map</string>
+    <string name="title_activity_sek">Map</string>
+    <string name="back">back</string>
 </resources>
