@@ -58,8 +58,10 @@ public class UserServlet extends HttpServlet {
         String location = request.getParameter("Location");
         String email = request.getParameter("E-mail");
         String gender = request.getParameter("Gender");
-        String meetmecode = "testcode";
-        /** -----------------*/
+        String team = getRandomTeam();
+
+        //Generate 4-Digit Pin
+        int meetmecode = generatePin();
 
         // check if passwords match
         String password = null;
@@ -77,15 +79,6 @@ public class UserServlet extends HttpServlet {
                 // return response
                 writer.println(htmlRespone);
             }
-        }
-
-        // select team
-        String team;
-        int i = (int) Math.floor(Math.random() * 2);
-        if (i == 0) {
-            team = "blue";
-        } else {
-            team = "red";
         }
 
         /** SET ALL USER ATTRIBUTES */
@@ -147,7 +140,7 @@ public class UserServlet extends HttpServlet {
     }
 
     // generate MD5 Hash of password and return as string
-    public static String getMD5(String pass) throws IOException {
+    private static String getMD5(String pass) throws IOException {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(pass.getBytes());
@@ -164,5 +157,23 @@ public class UserServlet extends HttpServlet {
             ie.printStackTrace();
         }
         return pass;
+    }
+
+    // choose random team
+    private static String getRandomTeam() {
+        String team;
+        int i = (int) Math.floor(Math.random() * 2);
+        if (i == 0) {
+            team = "blue";
+        } else {
+            team = "red";
+        }
+        return team;
+    }
+
+    // generate pin
+    private static int generatePin() {
+        //generate a 4 digit integer 1000 <10000
+        return (int) (Math.random() * 9000) + 1000;
     }
 }

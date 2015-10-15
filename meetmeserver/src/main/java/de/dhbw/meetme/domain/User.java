@@ -23,7 +23,7 @@ public class User extends PersistentObject {
     private String lastname;
     private String firstname;
     private String sLocation;
-    private String meetmecode;
+    private int meetmecode;
 
 
     private String email;
@@ -146,16 +146,16 @@ public class User extends PersistentObject {
         this.gender = gender;
     }
 
-    public String getMeetmecode() {
+    public int getMeetmecode() {
         return meetmecode;
     }
 
-    public void setMeetmecode(String meetmecode) {
+    public void setMeetmecode(int meetmecode) {
         this.meetmecode = meetmecode;
     }
 
     //This method sets all values to the variables of one User Object
-    public void setAllAttributes(String team, int rank, boolean active, String password, String email, String username, String firstname, String lastname, String sLocation, String gender, String meetmecode) {
+    public void setAllAttributes(String team, int rank, boolean active, String password, String email, String username, String firstname, String lastname, String sLocation, String gender, int meetmecode) {
         setActive(active);
         setTeam(team);
         setRank(rank);
