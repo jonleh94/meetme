@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
@@ -39,7 +40,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import android.widget.Toast;
+import com.google.android.gms.maps.*;
 
+//import com.google.android.gms.maps.GoogleMap;
+//import com.google.android.gms.maps.MapFragment;
+//import com.google.android.gms.maps.UiSettings;
 
 
 /**
@@ -61,8 +66,13 @@ public class HelloActivity extends Activity implements LocationListener, View.On
     private Button speichernButton;
     private Button userlistButton;
     private Button clearButton;
+    private Button mapButton;
     private boolean datenSammeln;
     private List<Location> positionen;
+    private GoogleMap googleMap;
+    private double lat;
+    private double lng;
+    private boolean geodaten;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +86,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         anzeigeLaenge = (TextView) this.findViewById(R.id.textViewLaenge);
         anzeigeHoehe = (TextView) this.findViewById(R.id.textViewHoehe);
         anzeigeUserlist = (EditText) this.findViewById(R.id.textViewUserlist);
+
 
         // Testen, ob GPS verfügbar, wenn nicht soll eine Meldung ausgegeben werden und die App beendet
         if (!isProviderEnabled()) {
@@ -98,8 +109,13 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         userlistButton.setOnClickListener(this);
         //Clear-Button
         clearButton = (Button) this.findViewById(R.id.button5);
-        clearButton.setEnabled(false);
         clearButton.setOnClickListener(this);
+        clearButton.setEnabled(false);
+        //clearButton.setOnClickListener(this);
+        //Map-Button (Layout-Wechsel)
+        mapButton = (Button) this.findViewById(R.id.button6);
+        mapButton.setOnClickListener(this);
+
 
         datenSammeln = false;
         positionen = new ArrayList<Location>();
@@ -109,8 +125,8 @@ public class HelloActivity extends Activity implements LocationListener, View.On
     //Überprüfung ob GPS angeschaltet ist (&Internet)
     public boolean isProviderEnabled() {
         boolean gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        // boolean network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        return (gps_enabled);  //return (gps_enabled&&network_enabled);
+        boolean network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        return (gps_enabled&&network_enabled);
     }
 
     //Start/Stopp/Speichern untereinander agieren können
@@ -157,37 +173,23 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             userlistButton.setEnabled(false);
             datenSammeln = false;
             anzeigeUserlist.setText("");
+            }
+
+
+        else if(v == mapButton && geodaten) {
+            startButton.setEnabled(true);
+            datenSammeln = false;
+
+            //Layout-Wechsel
+            Intent nextScreen = new Intent( getApplicationContext(), Map.class );
+            nextScreen.putExtra("lat", lat);
+            nextScreen.putExtra("lng",lng);
+            startActivity(nextScreen);
         }
     }
 
     //Userliste bekommen
     protected String getDaten(){
-   /**     final TextView mTextView = (TextView) findViewById(R.id.text);
-
-
-// Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://localhost:8087/meetmeserver/api/user/list";
-
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        mTextView.setText("Response is: "+ response.substring(0,500));
-                    }
-                },
-                new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mTextView.setText("That didn't work!");
-            }
-        });
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }*/
-
 
         Log.e(TAG, "run client");
         DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -233,7 +235,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
     @Override
     protected void onResume() {
         super.onResume();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, this); //überprüft alle 500s den Standort wenn ein Mindesabstand von m entstanden ist
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 0, this); //überprüft alle 500s den Standort wenn ein Mindesabstand von m entstanden ist
     }
 
     @Override
@@ -247,21 +249,22 @@ public class HelloActivity extends Activity implements LocationListener, View.On
 
         Toast.makeText(this, "Standort wird ermittelt", Toast.LENGTH_SHORT).show();
 
-        double laenge = loc.getLongitude();
-        double breite = loc.getLatitude();
+        lng = loc.getLongitude();
+        lat = loc.getLatitude();
 
         // (Double.toString(laenge), Double.toString(breite));
 
-        anzeigeBreite.setText(Location.convert(breite, Location.FORMAT_DEGREES));
-        anzeigeLaenge.setText(Location.convert(laenge, Location.FORMAT_DEGREES));
+        anzeigeBreite.setText(Location.convert(lat, Location.FORMAT_DEGREES));
+        anzeigeLaenge.setText(Location.convert(lng, Location.FORMAT_DEGREES));
 
         if (loc.hasAltitude()) {
             anzeigeHoehe.setText(String.valueOf(loc.getAltitude()));
         }
-
         if (datenSammeln) {
             positionen.add(loc);        //je nach dem speichert er die daten bzw. fügt sie der Liste hinzu welche später als Datei gespeichert werden kann
         }
+
+        geodaten = true;
     }
 
     //Wenn GPS ausgeschaltet wird soll Meldung erscheinen
@@ -373,7 +376,6 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                finish(); // Activity wird beendet
             }
         });
         AlertDialog dialog = builder.create();
