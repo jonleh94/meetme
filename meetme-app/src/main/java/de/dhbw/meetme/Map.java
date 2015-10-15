@@ -60,8 +60,8 @@ public class Map extends Activity{
                     Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
                 }
             }
-            Marker marker = googleMap.addMarker(new MarkerOptions().position(User).title("TutorialsPoint"));
-            //.snippet("unter dem Titel der Text")
+            Marker marker = googleMap.addMarker(new MarkerOptions().position(User).title("User 1 bzw. noch ich selbst")); //später sollten hier die anderen User hin
+            //.snippet("unter dem Titel der Text wie z.B schon getroffen, noch unbekannt etc.")
         }
         catch (Exception e) {
             e.printStackTrace();
