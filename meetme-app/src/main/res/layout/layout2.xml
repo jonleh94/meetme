@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
@@ -61,11 +62,14 @@
         </TableRow>
     </TableLayout>
 
+
     <LinearLayout
-            android:id="@+id/linearLayout1"
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-    </LinearLayout>
+            android:layout_marginTop="20dip"
+            android:orientation="horizontal" >
+
     <Button
             android:text="@string/start"
             android:id="@+id/button1"
@@ -85,6 +89,14 @@
             android:layout_width="65dp"
             android:layout_height="wrap_content">
     </Button>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:orientation="horizontal" >
     <Button
             android:text="@string/getuserlist"
             android:id="@+id/button4"
@@ -94,9 +106,23 @@
     <Button
             android:text="@string/clear"
             android:id="@+id/button5"
-            android:layout_width="65dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
     </Button>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nextlayout"
+                android:id="@+id/button6"/>
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:orientation="horizontal" >
+    </LinearLayout>
+
     <EditText
             android:layout_width="396dp"
             android:layout_height="wrap_content"
