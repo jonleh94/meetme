@@ -10,50 +10,36 @@ import java.io.Serializable;
 
 /**
  * This class represents the GeoDao Table in the database
- * <p>
+ *
  * Created by schabi on 26.09.2015.
  */
 
 @Entity
 public class GeoData extends PersistentObject {
 
-    @EmbeddedId
-    protected UuidId id; //primary k3y for this table
-    private String geolength;        // Längengrad
-    private String geowidth;         // Breitengrad
+    private String longitude;        // Längengrad
+    private String latitude;         // Breitengrad
 
-    public GeoData() {
-        id = new UuidId();
+    public String getLongitude() {
+        return longitude;
     }
 
-    public UuidId getId() {
-        return id;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public void setId(UuidId id) {
-        this.id = id;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public String getGeolength() {
-        return geolength;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public void setGeolength(String geolength) {
-        this.geolength = geolength;
-    }
-
-    public String getGeowidth() {
-        return geowidth;
-    }
-
-    public void setGeowidth(String geowidth) {
-        this.geowidth = geowidth;
-    }
 
     @Override
     public String toString() {
-        return "GeoData{" +
-                "id='" + id + '\'' + ", Längengrad='" + getGeolength() + '\'' + ", Breitengrad='" + getGeowidth() +
+        return "GeoData{" + "Längengrad='" + getLongitude() + '\'' + ", Breitengrad='" + getLatitude() +
                 '}';
     }
 }
