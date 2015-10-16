@@ -20,7 +20,7 @@ import java.util.List;
  * You can use either this or the the other.
  * Decide yourself!
  *
- */
+ *
 public class UserClassicDao implements Dao<UuidId, User> {
     @PersistenceContext
     protected EntityManager entityManager;
@@ -191,3 +191,4 @@ public class UserClassicDao implements Dao<UuidId, User> {
         return users;
     }
 }
+*/
