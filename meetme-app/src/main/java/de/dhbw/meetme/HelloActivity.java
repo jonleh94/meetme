@@ -127,9 +127,6 @@ public class HelloActivity extends Activity implements LocationListener, View.On
            LatLng User = new LatLng(lat, lng);
            try {
                if (googleMap == null) {
-                   LatLng User1 = new LatLng(9.1, 48.7);
-                   LatLng User2 = new LatLng(9.2, 48.77);
-                   String username = "user";
                    googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
                    GoogleMapOptions options = new GoogleMapOptions();
                    options.mapType(GoogleMap.MAP_TYPE_NORMAL);
