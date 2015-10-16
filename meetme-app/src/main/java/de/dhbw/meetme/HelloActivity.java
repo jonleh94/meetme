@@ -56,7 +56,6 @@ public class HelloActivity extends Activity implements LocationListener, View.On
     private Button userlistButton;
     private Button clearButton;
     private Button mapButton;
-    private boolean datenSammeln;
     private List<Location> positionen;
     private double lat;
     private double lng;
@@ -111,7 +110,6 @@ public class HelloActivity extends Activity implements LocationListener, View.On
 
        if(v == userlistButton){
             userlistButton.setEnabled(false);
-            datenSammeln = false;
             String test =  getDaten();
             anzeigeUserlist.setText(test);
             clearButton.setEnabled(true);
@@ -122,7 +120,6 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             anzeigeUserlist.setText("");
             }
         else if(v == mapButton && geodaten) {
-            datenSammeln = false;
            //Erstellen der Map
            LatLng User = new LatLng(lat, lng);
            try {
