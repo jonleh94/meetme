@@ -48,48 +48,7 @@
                     android:id="@+id/textViewLaenge"
                     android:padding="5dip"/>
         </TableRow>
-        <TableRow>
-            <TextView
-                    android:text="@string/hoehe"
-                    android:layout_column="1"
-                    android:id="@+id/textLabelHoehe"
-                    android:padding="5dip"/>
-            <TextView
-                    android:text=""
-                    android:layout_column="2"
-                    android:id="@+id/textViewHoehe"
-                    android:padding="5dip"/>
-        </TableRow>
     </TableLayout>
-
-
-    <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:orientation="horizontal" >
-
-    <Button
-            android:text="@string/start"
-            android:id="@+id/button1"
-            android:layout_width="65dp"
-            android:layout_height="wrap_content">
-    </Button>
-    <Button
-            android:text="@string/stopp"
-            android:id="@+id/button2"
-            android:layout_width="65dp"
-            android:layout_height="wrap_content">
-
-    </Button>
-    <Button
-            android:text="@string/speichern"
-            android:id="@+id/button3"
-            android:layout_width="65dp"
-            android:layout_height="wrap_content">
-    </Button>
-    </LinearLayout>
 
     <LinearLayout
             android:id="@+id/linearLayout3"
@@ -128,4 +87,11 @@
             android:layout_height="wrap_content"
             android:text=""
             android:id="@+id/textViewUserlist"/>
+    <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.google.android.gms.maps.MapFragment"
+            class="com.google.android.gms.maps.MapFragment"/>
+
 </LinearLayout>
