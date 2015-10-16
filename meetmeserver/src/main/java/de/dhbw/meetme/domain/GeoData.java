@@ -15,6 +15,7 @@ import java.io.Serializable;
  */
 
 @Entity
+@XmlRootElement
 public class GeoData extends PersistentObject {
 
     private String longitude;        // Längengrad
