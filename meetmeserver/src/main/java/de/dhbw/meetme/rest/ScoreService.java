@@ -40,15 +40,15 @@ public class ScoreService {
             transaction.begin();
             log.debug("Update ScoreBoard for user " + username);
 
-
-            ScoreBoard thisscoreBoard = new ScoreBoard();
-            thisscoreBoard.setScore(score);
-            scoreDao.persist(thisscoreBoard);
-
             User user = userDao.findByUserName(username); //Pull out the requested UserName
-            user.setScoreBoard(thisscoreBoard);
-            user.setUsername(username);
 
+            ScoreBoard scoreBoard = user.getScoreBoard();
+            scoreBoard.setScore(score);
+            scoreDao.persist(scoreBoard);
+
+
+            user.setScoreBoard(scoreBoard);
+            user.setUsername(username);
             userDao.persist(user);
             transaction.commit(); //Commit changes to the database
         }
