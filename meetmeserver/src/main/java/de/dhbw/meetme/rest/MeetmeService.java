@@ -35,7 +35,7 @@ public class MeetmeService {
 
     @Path("/{ownusername}/{meetmecode}/{foreignusername}")
     @POST
-    public String meetme(@PathParam("ownusername") String ownusername, @PathParam("meetmecode") int meetmecode, @PathParam("foreignusername") String foreignusername) {
+    public String postMeetme(@PathParam("ownusername") String ownusername, @PathParam("meetmecode") int meetmecode, @PathParam("foreignusername") String foreignusername) {
 
         transaction.begin();
         log.debug("Meetme Process for User " + ownusername);
@@ -64,7 +64,7 @@ public class MeetmeService {
 
     @Path("/{ownusername}")
     @GET
-    public int meetmepin(@PathParam("ownusername") String ownusername) {
+    public int getMeetmecode(@PathParam("ownusername") String ownusername) {
 
         transaction.begin();
         log.debug("MeetMe Pin for User " + ownusername);
