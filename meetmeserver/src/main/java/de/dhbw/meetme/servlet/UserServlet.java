@@ -38,6 +38,283 @@ public class UserServlet extends HttpServlet {
     @Inject
     Transaction transaction;
 
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("UserServlet get");
+
+        transaction.begin();
+        User user = new User(); //Create new user
+        Collection<User> users = userDao.list();
+
+        /** ----NEW USER IS CREATED WITH ATTRIBUTES */
+
+
+        /** ASSIGN THE FORM ATTRIBUTES TO LOCAL VARIRABLES*/
+
+        String username = request.getParameter("Username");
+        String firstName = request.getParameter("FirstName");
+        String lastName = request.getParameter("LastName");
+        String location = request.getParameter("Location");
+        String email = request.getParameter("E-mail");
+        String gender = "unknown";  // request.getParameter("Gender");
+        String team = getRandomTeam();
+
+        //Generate 4-Digit Pin
+        int meetmecode = generatePin();
+
+        // check if passwords match
+        String password = null;
+        if (request.getParameter("Password").equals(request.getParameter("Passwordr")) && !request.getParameter("Password").isEmpty()) {
+            // generate MD5 Hash to secure password
+            password = getMD5(request.getParameter("Password"));
+        } else if (request.getParameter("Password").isEmpty()) {
+            try (PrintWriter writer = response.getWriter()) {
+                // build HTML code
+                String htmlRespone = "<?php\n" +
+                        "\" +\n" +
+                        "                    \"require_once('connect_to_mysql.php');\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"    $username = $_POST['username'];\\n\" +\n" +
+                        "                    \"    $name = $_POST['name'];\\n\" +\n" +
+                        "                    \"    $vorname = $_POST['vorname'];\\n\" +\n" +
+                        "                    \"\\t$password = $_POST['password'];\\n\" +\n" +
+                        "                    \"    $email = $_POST['email'];\\n\" +\n" +
+                        "                    \"\\t  \\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"  \\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"  $query = mysql_query(\\\"INSERT INTO meetme (username, name, vorname, email, password, date) VALUES('$username','$name','$vorname','$email','$password',now())\\\") or die(\\\"Could not insert your information\\\");\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\t\\n\" +\n" +
+                        "                    \"?>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"<html>\\n\" +\n" +
+                        "                    \"\\t<head>\\n\" +\n" +
+                        "                    \"    <meta charset=\\\"UTF-8\\\">\\n\" +\n" +
+                        "                    \"\\t\\t<title>MeetMe - No Password Provided</title>\\n\" +\n" +
+                        "                    \"<link rel=\\\"stylesheet\\\" type=\\\"text/css\\\" href=\\\"css/style.css\\\">\\t\\n\" +\n" +
+                        "                    \"<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\" />\\n\" +\n" +
+                        "                    \"<meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1, user-scalable=no\\\" />\\n\" +\n" +
+                        "                    \"<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>\\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/jquery-1.10.2.min.js\\\"></script>    \\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/jquery.walidate.js\\\"></script>   \\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/walidate_register.js\\\"></script>  \\n\" +\n" +
+                        "                    \"\\t</head>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\t<body>\\n\" +\n" +
+                        "                    \"    <div class=\\\"wrapper\\\">\\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"    <div id=\\\"valid_box\\\"><img class=\\\"logo\\\" src=\\\"img/logo.png\\\" alt=\\\"MeetMe\\\" title=\\\"MeetMe\\\">\\n\" +\n" +
+                        "                    \"    <div id=\\\"success\\\"><div id=\\\"check_background\\\"><img src=\\\"img/stop.png\\\"></div><h2>No Password Provided!</h2></div>\\n\" +\n" +
+                        "\n" +
+                        "                    \"    </div>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"   \\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"\\t\\t\\n\" +\n" +
+                        "                    \"     </div>\\n\" +\n" +
+                        "                    \"     <div class=\\\"footer\\\">\\n\" +\n" +
+                        "                    \"     \\t<div class=\\\"nav_footer\\\">\\n\" +\n" +
+                        "                    \"        \\t<ul>\\n\" +\n" +
+                        "                    \"            \\t<li><a href=\\\"login.php\\\">Login</a></li>\\n\" +\n" +
+                        "                    \"                <li><a href=\\\"register.php\\\">Register</a></li>\\n\" +\n" +
+                        "                    \"                <li><a href=\\\"impressum.php\\\">Impressum</a></li>\\n\" +\n" +
+                        "                    \"            </ul>\\n\" +\n" +
+                        "                    \"        </div>\\n\" +\n" +
+                        "                    \"     </div>\\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"     <script type=\\\"text/javascript\\\">\\n\" +\n" +
+                        "                    \"\\t $('#button').click(function () {\\n\" +\n" +
+                        "                    \"\\t\\n\" +\n" +
+                        "                    \"   $('#register_button').slideUp(1000, function () {   $('#register_form').slideDown(1000)});\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"   \\n\" +\n" +
+                        "                    \"});\\n\" +\n" +
+                        "                    \"\\t </script>\\n\" +\n" +
+                        "                    \"     \\n\" +\n" +
+                        "                    \"\\t</body>\\n\" +\n" +
+                        "                    \"</html>";
+
+                // return response
+                writer.println(htmlRespone);
+            }
+        } else {
+            // get response writer
+            try (PrintWriter writer = response.getWriter()) {
+                // build HTML code
+                String htmlRespone = "<?php\n" +
+                        "\" +\n" +
+                        "                    \"require_once('connect_to_mysql.php');\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"    $username = $_POST['username'];\\n\" +\n" +
+                        "                    \"    $name = $_POST['name'];\\n\" +\n" +
+                        "                    \"    $vorname = $_POST['vorname'];\\n\" +\n" +
+                        "                    \"\\t$password = $_POST['password'];\\n\" +\n" +
+                        "                    \"    $email = $_POST['email'];\\n\" +\n" +
+                        "                    \"\\t  \\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"  \\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"  $query = mysql_query(\\\"INSERT INTO meetme (username, name, vorname, email, password, date) VALUES('$username','$name','$vorname','$email','$password',now())\\\") or die(\\\"Could not insert your information\\\");\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\t\\n\" +\n" +
+                        "                    \"?>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"<html>\\n\" +\n" +
+                        "                    \"\\t<head>\\n\" +\n" +
+                        "                    \"    <meta charset=\\\"UTF-8\\\">\\n\" +\n" +
+                        "                    \"\\t\\t<title>MeetMe - WRONG PASSWORD</title>\\n\" +\n" +
+                        "                    \"<link rel=\\\"stylesheet\\\" type=\\\"text/css\\\" href=\\\"css/style.css\\\">\\t\\n\" +\n" +
+                        "                    \"<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\" />\\n\" +\n" +
+                        "                    \"<meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1, user-scalable=no\\\" />\\n\" +\n" +
+                        "                    \"<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>\\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/jquery-1.10.2.min.js\\\"></script>    \\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/jquery.walidate.js\\\"></script>   \\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/walidate_register.js\\\"></script>  \\n\" +\n" +
+                        "                    \"\\t</head>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\t<body>\\n\" +\n" +
+                        "                    \"    <div class=\\\"wrapper\\\">\\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"    <div id=\\\"valid_box\\\"><img class=\\\"logo\\\" src=\\\"img/logo.png\\\" alt=\\\"MeetMe\\\" title=\\\"MeetMe\\\">\\n\" +\n" +
+                        "                    \"    <div id=\\\"success\\\"><div id=\\\"check_background\\\"><img src=\\\"img/stop.png\\\"></div><h2>Passwords do not match!</h2></div>\\n\" +\n" +
+                        "\n" +
+                        "                    \"    </div>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"   \\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"\\t\\t\\n\" +\n" +
+                        "                    \"     </div>\\n\" +\n" +
+                        "                    \"     <div class=\\\"footer\\\">\\n\" +\n" +
+                        "                    \"     \\t<div class=\\\"nav_footer\\\">\\n\" +\n" +
+                        "                    \"        \\t<ul>\\n\" +\n" +
+                        "                    \"            \\t<li><a href=\\\"login.php\\\">Login</a></li>\\n\" +\n" +
+                        "                    \"                <li><a href=\\\"register.php\\\">Register</a></li>\\n\" +\n" +
+                        "                    \"                <li><a href=\\\"impressum.php\\\">Impressum</a></li>\\n\" +\n" +
+                        "                    \"            </ul>\\n\" +\n" +
+                        "                    \"        </div>\\n\" +\n" +
+                        "                    \"     </div>\\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"     <script type=\\\"text/javascript\\\">\\n\" +\n" +
+                        "                    \"\\t $('#button').click(function () {\\n\" +\n" +
+                        "                    \"\\t\\n\" +\n" +
+                        "                    \"   $('#register_button').slideUp(1000, function () {   $('#register_form').slideDown(1000)});\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"   \\n\" +\n" +
+                        "                    \"});\\n\" +\n" +
+                        "                    \"\\t </script>\\n\" +\n" +
+                        "                    \"     \\n\" +\n" +
+                        "                    \"\\t</body>\\n\" +\n" +
+                        "                    \"</html>";
+
+                // return response
+                writer.println(htmlRespone);
+            }
+        }
+
+        /** SET ALL USER ATTRIBUTES */
+
+        user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender, meetmecode);
+
+
+        log.debug(user.toString());  //little test, can be removed when everything is working
+        userDao.persist(user);
+        transaction.commit();
+
+
+        users = new ArrayList<>(users); // cloning the read-only list so that we can add something
+        users.add(user);
+
+        //The User.toString() is responsible for the return values of this requests, when meetmeserver/user is executed. e.g. if toString() contains more attributes of the user, the meetmeserver/user will show more values
+        response.setContentType("text/html");
+        response.setBufferSize(8192);
+
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<?php\n" +
+                    "require_once('connect_to_mysql.php');\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "    $username = $_POST['username'];\n" +
+                    "    $name = $_POST['name'];\n" +
+                    "    $vorname = $_POST['vorname'];\n" +
+                    "\t$password = $_POST['password'];\n" +
+                    "    $email = $_POST['email'];\n" +
+                    "\t  \n" +
+                    "    \n" +
+                    "\n" +
+                    "  \n" +
+                    "\n" +
+                    "  $query = mysql_query(\"INSERT INTO meetme (username, name, vorname, email, password, date) VALUES('$username','$name','$vorname','$email','$password',now())\") or die(\"Could not insert your information\");\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "\t\n" +
+                    "?>\n" +
+                    "\n" +
+                    "<html>\n" +
+                    "\t<head>\n" +
+                    "    <meta charset=\"UTF-8\">\n" +
+                    "\t\t<title>MeetMe - Registration</title>\n" +
+                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/style.css\">\t\n" +
+                    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n" +
+                    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\" />\n" +
+                    "<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>\n" +
+                    "<script type=\"text/javascript\" src=\"js/jquery-1.10.2.min.js\"></script>    \n" +
+                    "<script type=\"text/javascript\" src=\"js/jquery.walidate.js\"></script>   \n" +
+                    "<script type=\"text/javascript\" src=\"js/walidate_register.js\"></script>  \n" +
+                    "\t</head>\n" +
+                    "\n" +
+                    "\t<body>\n" +
+                    "    <div class=\"wrapper\">\n" +
+                    "    \n" +
+                    "    <div id=\"valid_box\"><img class=\"logo\" src=\"img/logo.png\" alt=\"MeetMe\" title=\"MeetMe\">\n" +
+                    "    <div id=\"success\"><div id=\"check_background\"><img src=\"img/check.png\"></div><h2>Willkommen bei Meet Me</h2></div>\n" +
+
+                    "    </div>\n" +
+                    "\n" +
+                    "\n" +
+                    "   \n" +
+                    "    \n" +
+                    "\t\t\n" +
+                    "     </div>\n" +
+                    "     <div class=\"footer\">\n" +
+                    "     \t<div class=\"nav_footer\">\n" +
+                    "        \t<ul>\n" +
+                    "            \t<li><a href=\"login.php\">Login</a></li>\n" +
+                    "                <li><a href=\"register.php\">Register</a></li>\n" +
+                    "                <li><a href=\"impressum.php\">Impressum</a></li>\n" +
+                    "            </ul>\n" +
+                    "        </div>\n" +
+                    "     </div>\n" +
+                    "    \n" +
+                    "     <script type=\"text/javascript\">\n" +
+                    "\t $('#button').click(function () {\n" +
+                    "\t\n" +
+                    "   $('#register_button').slideUp(1000, function () {   $('#register_form').slideDown(1000)});\n" +
+                    "\n" +
+                    "   \n" +
+                    "});\n" +
+                    "\t </script>\n" +
+                    "     \n" +
+                    "\t</body>\n" +
+                    "</html>");
+        }
+    }
+
     // generate MD5 Hash of password and return as string
     private static String getMD5(String pass) throws IOException {
         try {
@@ -73,107 +350,7 @@ public class UserServlet extends HttpServlet {
     // generate pin
     private static int generatePin() {
         //generate a 4 digit integer 1000 <10000
-        return (int) (Math.random() * 9000) + 1000;
-    }
-
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("UserServlet get");
-
-        transaction.begin();
-        User user = new User(); //Create new user
-        userDao.persist(user);
-        Collection<User> users = userDao.list();
-
-        /** ----NEW USER IS CREATED WITH ATTRIBUTES */
-
-
-        /** ASSIGN THE FORM ATTRIBUTES TO LOCAL VARIRABLES*/
-
-        String username = request.getParameter("Username");
-        String firstName = request.getParameter("FirstName");
-        String lastName = request.getParameter("LastName");
-        String location = request.getParameter("Location");
-        String email = request.getParameter("E-mail");
-        String gender = request.getParameter("Gender");
-        String team = getRandomTeam();
-
-        //Generate 4-Digit Pin
-        int meetmecode = generatePin();
-
-        // check if passwords match
-        String password = null;
-        if (request.getParameter("Password").equals(request.getParameter("Passwordr"))) {
-            // generate MD5 Hash to secure password
-            password = getMD5(request.getParameter("Password"));
-        } else {
-            // get response writer
-            try (PrintWriter writer = response.getWriter()) {
-                // build HTML code
-                String htmlRespone = "<html>";
-                htmlRespone += "<h2>Passwords do not match! Reload page and try again!<br/>";
-                htmlRespone += "</html>";
-
-                // return response
-                writer.println(htmlRespone);
-            }
-        }
-
-        /** SET ALL USER ATTRIBUTES */
-
-        user.setAllAttributes(team, true, password, email, username, firstName, lastName, location, gender, meetmecode);
-
-
-        log.debug(user.toString());  //little test, can be removed when everything is working
-        userDao.persist(user);
-        transaction.commit();
-
-
-        users = new ArrayList<>(users); // cloning the read-only list so that we can add something
-        users.add(user);
-
-        //The User.toString() is responsible for the return values of this requests, when meetmeserver/user is executed. e.g. if toString() contains more attributes of the user, the meetmeserver/user will show more values
-        response.setContentType("text/html");
-        response.setBufferSize(8192);
-
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<html>\n" +
-                    "\n" +
-                    "<head>\n" +
-                    "    <meta charset=\"UTF-8\">\n" +
-                    "    <title>thx</title>\n" +
-                    "    <meta name=\"description\" content=\"\">\n" +
-                    "    <meta name=\"author\" content=\"\">\n" +
-                    "    <meta name=\"keywords\" content=\"\">\n" +
-                    "\n" +
-                    "    <link href=\"style.css\" type=\"text/css\" rel=\"stylesheet\">\n" +
-                    "</head>\n" +
-                    "\n" +
-                    "<body>\n" +
-                    "\n" +
-                    "<div id=\"inhalt\">\n" +
-                    "\n" +
-                    "    <div id=\"logo\">\n" +
-                    "        <img src=\"am.jpeg\">\n" +
-                    "        </br>\n" +
-                    "\n" +
-                    "    </div>\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "    <div id=\"text\">\n" +
-                    "        <p><center><h1> Thank you " + username + " for joining the meetme movement!" + "</h1>  </br>\n" +
-                    "        -Agile Monkeys-</center></p></br>\n" +
-                    "    </div>\n" +
-                    "    <div id=\"footer\">\n" +
-                    "        <a href=\"http://www.facebook.com\"><img src=\"facebook.png\"></a><a href=\"http://www.twitter.com\"><img src=\"twitter.png\"></a></br>\n" +
-                    "        <a href=\"#\">Impressum</a>\n" +
-                    "    </div>\n" +
-                    "\n" +
-                    "</div>\n" +
-                    "\n" +
-                    "</body>\n" +
-                    "</html>");
-        }
+        int pin = (int) (Math.random() * 9000) + 1000;
+        return pin;
     }
 }
