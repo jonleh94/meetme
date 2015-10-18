@@ -31,8 +31,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.widget.Toast;
 import com.google.android.gms.maps.*;
 
@@ -102,43 +104,40 @@ public class HelloActivity extends Activity implements LocationListener, View.On
     public boolean isProviderEnabled() {
         boolean gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         boolean network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        return (gps_enabled&&network_enabled);
+        return (gps_enabled && network_enabled);
     }
 
     //Start/Stopp/Speichern untereinander agieren können
     public void onClick(View v) {
 
-       if(v == userlistButton){
+        if (v == userlistButton) {
             userlistButton.setEnabled(false);
-            String test =  getDaten();
+            String test = getDaten();
             anzeigeUserlist.setText(test);
             clearButton.setEnabled(true);
-            }
-        else if(v == clearButton){
+        } else if (v == clearButton) {
             clearButton.setEnabled(false);
             userlistButton.setEnabled(true);
             anzeigeUserlist.setText("");
+        } else if (v == mapButton && geodaten) {
+            //Erstellen der Map
+            LatLng User = new LatLng(lat, lng);
+            try {
+                if (googleMap == null) {
+                    googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+                    GoogleMapOptions options = new GoogleMapOptions();
+                    options.mapType(GoogleMap.MAP_TYPE_NORMAL);
+                    options.compassEnabled(false);
+                    googleMap.setMyLocationEnabled(true);
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(User, 15));
+                    if (googleMap == null) {
+                        Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        else if(v == mapButton && geodaten) {
-           //Erstellen der Map
-           LatLng User = new LatLng(lat, lng);
-           try {
-               if (googleMap == null) {
-                   googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-                   GoogleMapOptions options = new GoogleMapOptions();
-                   options.mapType(GoogleMap.MAP_TYPE_NORMAL);
-                   options.compassEnabled(false);
-                   googleMap.setMyLocationEnabled(true);
-                   googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(User, 15));
-                   if (googleMap == null) {
-                       Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
-                   }
-               }
-           }
-           catch (Exception e) {
-               e.printStackTrace();
-           }
-           maperstellt = true;
+            maperstellt = true;
             //Layout-Wechsel
             /*
             Intent nextScreen = new Intent( getApplicationContext(), Map.class );
@@ -150,7 +149,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
     }
 
     //Userliste bekommen
-    protected String getDaten(){
+    protected String getDaten() {
 
         Log.e(TAG, "run client");
         DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -161,7 +160,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             HttpGet getRequest = new HttpGet("/meetmeserver/api/user/list");
             HttpResponse httpResponse = httpclient.execute(target, getRequest);
             HttpEntity entity = httpResponse.getEntity();
-           //Log.e(TAG, EntityUtils.toString(entity));
+            //Log.e(TAG, EntityUtils.toString(entity));
             return EntityUtils.toString(entity);
             //Toast.makeText(this, "Userlist wird abgerufen, Verbindung steht", Toast.LENGTH_SHORT).show();
 
@@ -173,7 +172,49 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         }
     }
 
-    protected void sendGPSData(){ //(String laenge, String breite){
+    protected String getMeetMeCode(String username) {
+
+        Log.e(TAG, "??");
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        try {
+            // specify the host, protocol, and port
+            HttpHost target = new HttpHost(HOSTNAME, PORT, "http");
+            // specify the get request
+            HttpGet getRequest = new HttpGet("/meetmeserver/api/meetmepin/" + username);
+            HttpResponse httpResponse = httpclient.execute(target, getRequest);
+            HttpEntity entity = httpResponse.getEntity();
+            return EntityUtils.toString(entity);
+        } catch (Exception e) {
+            Log.e(TAG, "Error: " + e);
+            e.printStackTrace(System.out);
+            return e.toString();
+        }
+    }
+
+    protected void sendMeetMeData() {
+
+        // Example Data
+        // TBD as soon as UI ready
+        String ownUsername = null;
+        String foreignUsername = "moja";
+        int foreignCode = 4491;
+
+
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        try {
+            // specify the host, protocol, and port
+            HttpHost target = new HttpHost(HOSTNAME, PORT, "http");
+            // specify the put request
+            HttpPut putRequest = new HttpPut("/meetmeserver/api/meetme/" + ownUsername + "/" + foreignCode + "/" + foreignUsername);
+            HttpResponse httpResponse = httpclient.execute(target, putRequest);
+            httpResponse.toString();
+        } catch (Exception e) {
+            Log.e(TAG, "Error: " + e);
+            e.printStackTrace(System.out);
+        }
+    }
+
+    protected void sendGPSData() { //(String laenge, String breite){
 
         Log.e(TAG, "run client");
         DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -220,12 +261,12 @@ public class HelloActivity extends Activity implements LocationListener, View.On
         sendGPSData();
 
         //Hier wird der eigene Marker erstellt
-        if(maperstellt){
+        if (maperstellt) {
             //einlesen der daten aus jason format und speichern als
             LatLng User = new LatLng(lat, lng);
             String username = "User1";
             if (marker != null) {
-              marker.remove();      //löscht immer nur einen marker
+                marker.remove();      //löscht immer nur einen marker
             }
             marker = googleMap.addMarker(new MarkerOptions().position(User).title(username).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).draggable(true)); //später sollten hier die anderen User hin
         }
