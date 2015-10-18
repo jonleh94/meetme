@@ -28,7 +28,7 @@ public class UserDao extends JpaDao<UuidId, User> {
 
     //@SuppressWarnings("unchecked")
     public Collection<User> findByName(String username) {
-        Query query = entityManager.createQuery("SELECT u from User u where u.username = :username"); //prev.: from User u where u.username = :username"
+        Query query = entityManager.createQuery("SELECT u from User u where u.username = :username");
         query.setParameter("username", username);
         return (Collection<User>) query.getResultList();
     }
@@ -37,7 +37,7 @@ public class UserDao extends JpaDao<UuidId, User> {
      * This method represents the same method as above, but returns just ONE user object instead of a collection
      */
     public User findByUserName(String username) {
-        Query query = entityManager.createQuery("SELECT u from User u where u.username = :username"); //prev.: from User u where u.username = :username"
+        Query query = entityManager.createQuery("SELECT u from User u where u.username = :username");
         query.setParameter("username", username);
         return (User) query.getResultList().get(0);
     }
