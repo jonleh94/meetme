@@ -71,43 +71,76 @@ public class UserServlet extends HttpServlet {
         } else if (request.getParameter("Password").isEmpty()) {
             try (PrintWriter writer = response.getWriter()) {
                 // build HTML code
-                String htmlRespone = "<html>\n" +
+                String htmlRespone = "<?php\n" +
+                        "\" +\n" +
+                        "                    \"require_once('connect_to_mysql.php');\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"    $username = $_POST['username'];\\n\" +\n" +
+                        "                    \"    $name = $_POST['name'];\\n\" +\n" +
+                        "                    \"    $vorname = $_POST['vorname'];\\n\" +\n" +
+                        "                    \"\\t$password = $_POST['password'];\\n\" +\n" +
+                        "                    \"    $email = $_POST['email'];\\n\" +\n" +
+                        "                    \"\\t  \\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"  \\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"  $query = mysql_query(\\\"INSERT INTO meetme (username, name, vorname, email, password, date) VALUES('$username','$name','$vorname','$email','$password',now())\\\") or die(\\\"Could not insert your information\\\");\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\t\\n\" +\n" +
+                        "                    \"?>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"<html>\\n\" +\n" +
+                        "                    \"\\t<head>\\n\" +\n" +
+                        "                    \"    <meta charset=\\\"UTF-8\\\">\\n\" +\n" +
+                        "                    \"\\t\\t<title>MeetMe - No Password Provided</title>\\n\" +\n" +
+                        "                    \"<link rel=\\\"stylesheet\\\" type=\\\"text/css\\\" href=\\\"css/style.css\\\">\\t\\n\" +\n" +
+                        "                    \"<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\" />\\n\" +\n" +
+                        "                    \"<meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1, user-scalable=no\\\" />\\n\" +\n" +
+                        "                    \"<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>\\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/jquery-1.10.2.min.js\\\"></script>    \\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/jquery.walidate.js\\\"></script>   \\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/walidate_register.js\\\"></script>  \\n\" +\n" +
+                        "                    \"\\t</head>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\t<body>\\n\" +\n" +
+                        "                    \"    <div class=\\\"wrapper\\\">\\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"    <div id=\\\"valid_box\\\"><img class=\\\"logo\\\" src=\\\"img/logo.png\\\" alt=\\\"MeetMe\\\" title=\\\"MeetMe\\\">\\n\" +\n" +
+                        "                    \"    <div id=\\\"success\\\"><div id=\\\"check_background\\\"><img src=\\\"img/stop.png\\\"></div><h2>No Password Provided!</h2></div>\\n\" +\n" +
                         "\n" +
-                        "<head>\n" +
-                        "    <meta charset=\"UTF-8\">\n" +
-                        "    <title>No Password Provided</title>\n" +
-                        "    <meta name=\"description\" content=\"\">\n" +
-                        "    <meta name=\"author\" content=\"\">\n" +
-                        "    <meta name=\"keywords\" content=\"\">\n" +
-                        "\n" +
-                        "    <link href=\"style.css\" type=\"text/css\" rel=\"stylesheet\">\n" +
-                        "</head>\n" +
-                        "\n" +
-                        "<body>\n" +
-                        "\n" +
-                        "<div id=\"inhalt\">\n" +
-                        "\n" +
-                        "    <div id=\"logo\">\n" +
-                        "        <img src=\"am.jpeg\">\n" +
-                        "        </br>\n" +
-                        "\n" +
-                        "    </div>\n" +
-                        "\n" +
-                        "\n" +
-                        "\n" +
-                        "    <div id=\"text\">\n" +
-                        "        <p><center><h1>Please provide a Password! Go back and try again!" + "</h1>  </br>\n" +
-                        "        -Agile Monkeys-</center></p></br>\n" +
-                        "    </div>\n" +
-                        "    <div id=\"footer\">\n" +
-                        "        <a href=\"http://www.facebook.com\"><img src=\"facebook.png\"></a><a href=\"http://www.twitter.com\"><img src=\"twitter.png\"></a></br>\n" +
-                        "        <a href=\"#\">Impressum</a>\n" +
-                        "    </div>\n" +
-                        "\n" +
-                        "</div>\n" +
-                        "\n" +
-                        "</body>\n" +
-                        "</html>";
+                        "                    \"    </div>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"   \\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"\\t\\t\\n\" +\n" +
+                        "                    \"     </div>\\n\" +\n" +
+                        "                    \"     <div class=\\\"footer\\\">\\n\" +\n" +
+                        "                    \"     \\t<div class=\\\"nav_footer\\\">\\n\" +\n" +
+                        "                    \"        \\t<ul>\\n\" +\n" +
+                        "                    \"            \\t<li><a href=\\\"login.php\\\">Login</a></li>\\n\" +\n" +
+                        "                    \"                <li><a href=\\\"register.php\\\">Register</a></li>\\n\" +\n" +
+                        "                    \"                <li><a href=\\\"impressum.php\\\">Impressum</a></li>\\n\" +\n" +
+                        "                    \"            </ul>\\n\" +\n" +
+                        "                    \"        </div>\\n\" +\n" +
+                        "                    \"     </div>\\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"     <script type=\\\"text/javascript\\\">\\n\" +\n" +
+                        "                    \"\\t $('#button').click(function () {\\n\" +\n" +
+                        "                    \"\\t\\n\" +\n" +
+                        "                    \"   $('#register_button').slideUp(1000, function () {   $('#register_form').slideDown(1000)});\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"   \\n\" +\n" +
+                        "                    \"});\\n\" +\n" +
+                        "                    \"\\t </script>\\n\" +\n" +
+                        "                    \"     \\n\" +\n" +
+                        "                    \"\\t</body>\\n\" +\n" +
+                        "                    \"</html>";
 
                 // return response
                 writer.println(htmlRespone);
@@ -116,43 +149,76 @@ public class UserServlet extends HttpServlet {
             // get response writer
             try (PrintWriter writer = response.getWriter()) {
                 // build HTML code
-                String htmlRespone = "<html>\n" +
+                String htmlRespone = "<?php\n" +
+                        "\" +\n" +
+                        "                    \"require_once('connect_to_mysql.php');\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"    $username = $_POST['username'];\\n\" +\n" +
+                        "                    \"    $name = $_POST['name'];\\n\" +\n" +
+                        "                    \"    $vorname = $_POST['vorname'];\\n\" +\n" +
+                        "                    \"\\t$password = $_POST['password'];\\n\" +\n" +
+                        "                    \"    $email = $_POST['email'];\\n\" +\n" +
+                        "                    \"\\t  \\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"  \\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"  $query = mysql_query(\\\"INSERT INTO meetme (username, name, vorname, email, password, date) VALUES('$username','$name','$vorname','$email','$password',now())\\\") or die(\\\"Could not insert your information\\\");\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\t\\n\" +\n" +
+                        "                    \"?>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"<html>\\n\" +\n" +
+                        "                    \"\\t<head>\\n\" +\n" +
+                        "                    \"    <meta charset=\\\"UTF-8\\\">\\n\" +\n" +
+                        "                    \"\\t\\t<title>MeetMe - WRONG PASSWORD</title>\\n\" +\n" +
+                        "                    \"<link rel=\\\"stylesheet\\\" type=\\\"text/css\\\" href=\\\"css/style.css\\\">\\t\\n\" +\n" +
+                        "                    \"<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\" />\\n\" +\n" +
+                        "                    \"<meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1, user-scalable=no\\\" />\\n\" +\n" +
+                        "                    \"<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>\\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/jquery-1.10.2.min.js\\\"></script>    \\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/jquery.walidate.js\\\"></script>   \\n\" +\n" +
+                        "                    \"<script type=\\\"text/javascript\\\" src=\\\"js/walidate_register.js\\\"></script>  \\n\" +\n" +
+                        "                    \"\\t</head>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\t<body>\\n\" +\n" +
+                        "                    \"    <div class=\\\"wrapper\\\">\\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"    <div id=\\\"valid_box\\\"><img class=\\\"logo\\\" src=\\\"img/logo.png\\\" alt=\\\"MeetMe\\\" title=\\\"MeetMe\\\">\\n\" +\n" +
+                        "                    \"    <div id=\\\"success\\\"><div id=\\\"check_background\\\"><img src=\\\"img/stop.png\\\"></div><h2>Passwords do not match!</h2></div>\\n\" +\n" +
                         "\n" +
-                        "<head>\n" +
-                        "    <meta charset=\"UTF-8\">\n" +
-                        "    <title>Password Mismatch</title>\n" +
-                        "    <meta name=\"description\" content=\"\">\n" +
-                        "    <meta name=\"author\" content=\"\">\n" +
-                        "    <meta name=\"keywords\" content=\"\">\n" +
-                        "\n" +
-                        "    <link href=\"style.css\" type=\"text/css\" rel=\"stylesheet\">\n" +
-                        "</head>\n" +
-                        "\n" +
-                        "<body>\n" +
-                        "\n" +
-                        "<div id=\"inhalt\">\n" +
-                        "\n" +
-                        "    <div id=\"logo\">\n" +
-                        "        <img src=\"am.jpeg\">\n" +
-                        "        </br>\n" +
-                        "\n" +
-                        "    </div>\n" +
-                        "\n" +
-                        "\n" +
-                        "\n" +
-                        "    <div id=\"text\">\n" +
-                        "        <p><center><h1> Passwords do not match! Go back and try again!" + "</h1>  </br>\n" +
-                        "        -Agile Monkeys-</center></p></br>\n" +
-                        "    </div>\n" +
-                        "    <div id=\"footer\">\n" +
-                        "        <a href=\"http://www.facebook.com\"><img src=\"facebook.png\"></a><a href=\"http://www.twitter.com\"><img src=\"twitter.png\"></a></br>\n" +
-                        "        <a href=\"#\">Impressum</a>\n" +
-                        "    </div>\n" +
-                        "\n" +
-                        "</div>\n" +
-                        "\n" +
-                        "</body>\n" +
-                        "</html>";
+                        "                    \"    </div>\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"   \\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"\\t\\t\\n\" +\n" +
+                        "                    \"     </div>\\n\" +\n" +
+                        "                    \"     <div class=\\\"footer\\\">\\n\" +\n" +
+                        "                    \"     \\t<div class=\\\"nav_footer\\\">\\n\" +\n" +
+                        "                    \"        \\t<ul>\\n\" +\n" +
+                        "                    \"            \\t<li><a href=\\\"login.php\\\">Login</a></li>\\n\" +\n" +
+                        "                    \"                <li><a href=\\\"register.php\\\">Register</a></li>\\n\" +\n" +
+                        "                    \"                <li><a href=\\\"impressum.php\\\">Impressum</a></li>\\n\" +\n" +
+                        "                    \"            </ul>\\n\" +\n" +
+                        "                    \"        </div>\\n\" +\n" +
+                        "                    \"     </div>\\n\" +\n" +
+                        "                    \"    \\n\" +\n" +
+                        "                    \"     <script type=\\\"text/javascript\\\">\\n\" +\n" +
+                        "                    \"\\t $('#button').click(function () {\\n\" +\n" +
+                        "                    \"\\t\\n\" +\n" +
+                        "                    \"   $('#register_button').slideUp(1000, function () {   $('#register_form').slideDown(1000)});\\n\" +\n" +
+                        "                    \"\\n\" +\n" +
+                        "                    \"   \\n\" +\n" +
+                        "                    \"});\\n\" +\n" +
+                        "                    \"\\t </script>\\n\" +\n" +
+                        "                    \"     \\n\" +\n" +
+                        "                    \"\\t</body>\\n\" +\n" +
+                        "                    \"</html>";
 
                 // return response
                 writer.println(htmlRespone);
