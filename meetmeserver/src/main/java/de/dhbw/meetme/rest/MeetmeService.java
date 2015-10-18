@@ -38,7 +38,7 @@ public class MeetmeService {
 
     @Path("/{ownusername}/{meetmecode}/{foreignusername}")
     @POST
-    public String meetme(@PathParam("ownusername") String ownusername, @PathParam("meetmecode") String meetmecode, @PathParam("foreignusername") String foreignusername) {
+    public String meetme(@PathParam("ownusername") String ownusername, @PathParam("meetmecode") int meetmecode, @PathParam("foreignusername") String foreignusername) {
 
         transaction.begin();
         log.debug("Meetme Process for User " + ownusername);
@@ -47,7 +47,7 @@ public class MeetmeService {
         User foreignuser = userDao.findByUserName(foreignusername);
 
         //Check if the entered code is equal to the Code in the database AND if the team is equal for both players
-        if ((meetmecode.equals(foreignuser.getMeetmecode())) && (ownuser.getTeam().equals(foreignuser.getTeam()))) {
+        if ((meetmecode == foreignuser.getMeetmecode()) && (ownuser.getTeam().equals(foreignuser.getTeam()))) {
 
             ScoreBoard ownuserScoreBoard = ownuser.getScoreBoard();
             ownuserScoreBoard.setScore(ownuserScoreBoard.getScore() + 1);
