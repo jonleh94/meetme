@@ -1,0 +1,116 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+
+    <link href="style.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+
+<div id="inhalt">
+
+    <div id="logo">
+        <img src="am.jpeg">
+        </br>
+
+    </div>
+
+    <div id="table">
+
+        <form name="registerForm" method="post" onsubmit="return myFunction()" action="/meetmeserver/user">
+
+
+            <table border="0" align="center" cellpadding="2" cellspacing="2">
+                <tbody>
+                <tr></tr>
+                <tr>
+                    <td align="right"><strong>Gender:</strong></td>
+                    <td><select name="Gender">
+                        <option value="0">Select</option>
+                        <option value="m">Male</option>
+                        <option value="f">Female</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>Username:</strong></td>
+                    <td><input maxlength="50" name="Username" size="45" type="text"/></td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>First Name:</strong></td>
+                    <td><input maxlength="50" name="FirstName" size="45" type="text"/></td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>Last Name:</strong></td>
+                    <td><input maxlength="50" name="LastName" size="45" type="text"/></td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>Location:</strong></td>
+                    <td><input maxlength="50" name="Location" size="45" type="text"/></td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>E-mail:</strong></td>
+                    <td><input maxlength="80" name="E-mail" size="45" type="text"/></td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>Password:</strong></td>
+                    <td><input id="pass1" maxlength="80" name="Password" size="45" type="password"/></td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>Password repeat:</strong></td>
+                    <td><input id="pass2" maxlength="80" name="Passwordr" size="45" type="password"/></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Register"/></td>
+                </tr>
+                </tbody>
+            </table>
+            <script>
+                function myFunction() {
+                    var pass1 = document.getElementById("pass1").value;
+                    var pass2 = document.getElementById("pass2").value;
+                    var ok = true;
+                    if (pass1 != pass2) {
+                        alert("Passwords Do not match");
+                        document.getElementById("pass1").style.borderColor = "#E34234";
+                        document.getElementById("pass2").style.borderColor = "#E34234";
+                        ok = false;
+                    }
+                    else {
+                    }
+                    return ok;
+                }
+            </script>
+        </form>
+
+
+        </br>
+
+    </div>
+
+
+    <div id="text">
+        <p>
+        <center>Bitte registieren Sie sich hier.  </br>
+            -Agile Monkeys-
+        </center>
+        </p></br>
+    </div>
+    <div id="footer">
+        <a href="http://www.facebook.com"><img src="facebook.png"></a><a href="http://www.twitter.com"><img
+            src="twitter.png"></a></br>
+        <a href="#">Impressum</a>
+    </div>
+
+</div>
+
+</body>
+
+
+</html>

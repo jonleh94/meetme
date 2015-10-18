@@ -1,7 +1,9 @@
 package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.database.Transaction;
+import de.dhbw.meetme.database.dao.GeoDao;
 import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
 import groovy.lang.Singleton;
@@ -26,6 +28,8 @@ public class UserService {
     UserDao userDao;
     @Inject
     Transaction transaction;
+    @Inject
+    GeoDao geoDao;
 
     @Path("/list")
     @GET
@@ -36,7 +40,17 @@ public class UserService {
         transaction.commit();
         return users;
     }
-
+/**
+    @Path("/listGeo")
+    @GET
+    public Collection<User> listGeo() {
+        log.debug("List users All");
+        transaction.begin();
+        Collection<User> users = userDao.listGeo();
+        transaction.commit();
+        return users;
+    }
+*/
     @Path("/get/{id}")
     @GET
     public User get(@PathParam("id") String id) {

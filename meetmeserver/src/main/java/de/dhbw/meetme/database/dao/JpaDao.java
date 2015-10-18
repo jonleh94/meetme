@@ -49,9 +49,14 @@ public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> i
 
     @SuppressWarnings("unchecked")
     public Collection<TYPE> list() {
-        Query q = entityManager.createQuery("select e from " + entityClass.getName() + " e");  //in tutorial this call needs a real class,
-        // here it uses a String by "getName()"..
-        return (Collection<TYPE>) q.getResultList();                                              //My proposal: "Select e from User e "to list all elements from the
+        Query q = entityManager.createQuery("select e from " + entityClass.getName() + " e");
+        return (Collection<TYPE>) q.getResultList();
     }
 
+    /**
+    public Collection<TYPE> listGeo(){
+        Query q = entityManager.createQuery("Select u, g from " + entityClass.getName() + " u" + " JOIN u.geoData g");
+        return  (Collection<TYPE>) q.getResultList();
+    }
+*/
 }
