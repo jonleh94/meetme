@@ -23,12 +23,12 @@ public class User extends PersistentObject {
     private String lastname;
     private String firstname;
     private String sLocation;
-    private String meetmecode;
+    private int meetmecode;
 
 
     private String email;
     private String team;
-    private Integer password;
+    private String password;
     private boolean active; //true if user is playing the game; false if not
     private int rank;    //Leaderboard rank
     private String gender;
@@ -89,11 +89,11 @@ public class User extends PersistentObject {
         this.active = active;
     }
 
-    public Integer getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(Integer password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -146,16 +146,16 @@ public class User extends PersistentObject {
         this.gender = gender;
     }
 
-    public String getMeetmecode() {
+    public int getMeetmecode() {
         return meetmecode;
     }
 
-    public void setMeetmecode(String meetmecode) {
+    public void setMeetmecode(int meetmecode) {
         this.meetmecode = meetmecode;
     }
 
     //This method sets all values to the variables of one User Object
-    public void setAllAttributes(String team, int rank, boolean active, Integer password, String email, String username, String firstname, String lastname, String sLocation, String gender, String meetmecode) {
+    public void setAllAttributes(String team, int rank, boolean active, String password, String email, String username, String firstname, String lastname, String sLocation, String gender, int meetmecode) {
         setActive(active);
         setTeam(team);
         setRank(rank);
