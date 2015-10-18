@@ -17,12 +17,12 @@ import javax.ws.rs.*;
  * Webservice to handle the HTTP request ..../api/username/password/longitude/latitude
  * updates a User with GeoData :)
  * works properly
- *
- *
+ * <p>
+ * <p>
  * TESTED:
  * works when a User has no GEODATA and can update a Users GeoData when he has one allready
  * no GeoData works with Exception e handling which is not optimal
- *
+ * <p>
  * TODO:
  * FIX the Exception e Handling and insert a more specific error handling
  */
@@ -59,34 +59,34 @@ public class GeoService {
             thisgeoData.setLongitude(longitude); //Set Longitude from the URL command
             geoDao.persist(thisgeoData);
 
-            if ((thisuser.getPassword()).equals(password.hashCode())) { //Password check, generates hashcode
+            //   if ((thisuser.getPassword()).equals(password.hashCode())) { //Password check, generates hashcode
 
-                thisuser.setGeoData(thisgeoData);
-                userDao.persist(thisuser);
-                transaction.commit(); //Commit changes to the database
-                return "SERVER: Operation successful, updated GeoData for User: " + username;
+            thisuser.setGeoData(thisgeoData);
+            userDao.persist(thisuser);
+            transaction.commit(); //Commit changes to the database
+            return "SERVER: Operation successful, updated GeoData for User: " + username;
 
-            } else {
-                log.debug("COULD NOT UPDATE GEODATA: WRONG PASSWORD, please try again");
-                return "SERVER: WRONG PASSWORD, please try again";
-            }
-        } catch (Exception e) {
+        } /**else {
+         log.debug("COULD NOT UPDATE GEODATA: WRONG PASSWORD, please try again");
+         return "SERVER: WRONG PASSWORD, please try again";
+         }*/ catch (Exception e) {
             GeoData thisgeoData = new GeoData(); // create new GeoData object entity
             thisgeoData.setLatitude(latitude);   // Set Latitude from the URL command
             thisgeoData.setLongitude(longitude); //Set Longitude from the URL command
             geoDao.persist(thisgeoData);
 
-            if ((thisuser.getPassword()).equals(password.hashCode())) { //Password check, generates hashcode
+            // if ((thisuser.getPassword()).equals(password.hashCode())) { //Password check, generates hashcode
 
-                thisuser.setGeoData(thisgeoData);
-                userDao.persist(thisuser);
-                transaction.commit(); //Commit changes to the database
-                return "SERVER: Operation successful, updated GeoData for User: " + username;
-            } else {
-                log.debug("COULD NOT UPDATE GEODATA: WRONG PASSWORD, please try again");
-                return "SERVER: WRONG PASSWORD, please try again";
-            }
+            thisuser.setGeoData(thisgeoData);
+            userDao.persist(thisuser);
+            transaction.commit(); //Commit changes to the database
+            return "SERVER: Operation successful, updated GeoData for User: " + username;
         }
+        /**else {
+         log.debug("COULD NOT UPDATE GEODATA: WRONG PASSWORD, please try again");
+         return "SERVER: WRONG PASSWORD, please try again";
+         }*/
+
     }
 }
 
