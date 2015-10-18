@@ -38,6 +38,43 @@ public class UserServlet extends HttpServlet {
     @Inject
     Transaction transaction;
 
+    // generate MD5 Hash of password and return as string
+    private static String getMD5(String pass) throws IOException {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(pass.getBytes());
+
+            byte byteData[] = md.digest();
+
+            //convert the byte to hex format
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < byteData.length; i++) {
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            pass = sb.toString();
+        } catch (Exception ie) {
+            ie.printStackTrace();
+        }
+        return pass;
+    }
+
+    // choose random team
+    private static String getRandomTeam() {
+        String team;
+        int i = (int) Math.floor(Math.random() * 2);
+        if (i == 0) {
+            team = "blue";
+        } else {
+            team = "red";
+        }
+        return team;
+    }
+
+    // generate pin
+    private static int generatePin() {
+        //generate a 4 digit integer 1000 <10000
+        return (int) (Math.random() * 9000) + 1000;
+    }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,6 +82,7 @@ public class UserServlet extends HttpServlet {
 
         transaction.begin();
         User user = new User(); //Create new user
+        userDao.persist(user);
         Collection<User> users = userDao.list();
 
         /** ----NEW USER IS CREATED WITH ATTRIBUTES */
@@ -83,7 +121,7 @@ public class UserServlet extends HttpServlet {
 
         /** SET ALL USER ATTRIBUTES */
 
-        user.setAllAttributes(team, 0, true, password, email, username, firstName, lastName, location, gender, meetmecode);
+        user.setAllAttributes(team, true, password, email, username, firstName, lastName, location, gender, meetmecode);
 
 
         log.debug(user.toString());  //little test, can be removed when everything is working
@@ -137,43 +175,5 @@ public class UserServlet extends HttpServlet {
                     "</body>\n" +
                     "</html>");
         }
-    }
-
-    // generate MD5 Hash of password and return as string
-    private static String getMD5(String pass) throws IOException {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(pass.getBytes());
-
-            byte byteData[] = md.digest();
-
-            //convert the byte to hex format
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < byteData.length; i++) {
-                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            pass = sb.toString();
-        } catch (Exception ie) {
-            ie.printStackTrace();
-        }
-        return pass;
-    }
-
-    // choose random team
-    private static String getRandomTeam() {
-        String team;
-        int i = (int) Math.floor(Math.random() * 2);
-        if (i == 0) {
-            team = "blue";
-        } else {
-            team = "red";
-        }
-        return team;
-    }
-
-    // generate pin
-    private static int generatePin() {
-        //generate a 4 digit integer 1000 <10000
-        return (int) (Math.random() * 9000) + 1000;
     }
 }
