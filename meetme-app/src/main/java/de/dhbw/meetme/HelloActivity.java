@@ -180,7 +180,7 @@ public class HelloActivity extends Activity implements LocationListener, View.On
             // specify the host, protocol, and port
             HttpHost target = new HttpHost(HOSTNAME, PORT, "http");
             // specify the get request
-            HttpGet getRequest = new HttpGet("/meetmeserver/api/meetmepin/" + username);
+            HttpGet getRequest = new HttpGet("/meetmeserver/api/meetme/" + username);
             HttpResponse httpResponse = httpclient.execute(target, getRequest);
             HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity);
