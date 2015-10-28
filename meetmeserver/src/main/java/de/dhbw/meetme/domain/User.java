@@ -1,9 +1,7 @@
 package de.dhbw.meetme.domain;
 
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -19,6 +17,7 @@ public class User extends PersistentObject {
      * --------------------VARIABLES----------------------------
      */
 
+    @Column(unique = true)
     private String username;
     private String lastname;
     private String firstname;
@@ -35,28 +34,6 @@ public class User extends PersistentObject {
     /**
      * ----------------------------------------------------------
      */
-
-
-    @OneToOne
-    private GeoData geoData;
-    @OneToOne
-    private ScoreBoard scoreBoard;
-
-    public GeoData getGeoData() {
-        return geoData;
-    }
-
-    public void setGeoData(GeoData geoData) {
-        this.geoData = geoData;
-    }
-
-    public ScoreBoard getScoreBoard() {
-        return scoreBoard;
-    }
-
-    public void setScoreBoard(ScoreBoard scoreBoard) {
-        this.scoreBoard = scoreBoard;
-    }
 
 
     /**
