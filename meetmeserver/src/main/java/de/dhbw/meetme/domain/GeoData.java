@@ -7,10 +7,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class represents the GeoDao Table in the database
- *
+ * <p>
  * Created by schabi on 26.09.2015.
  */
 
@@ -18,8 +19,26 @@ import java.io.Serializable;
 @XmlRootElement
 public class GeoData extends PersistentObject {
 
+    private String username;
     private String longitude;        // Längengrad
     private String latitude;         // Breitengrad
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate() {
+        this.date = new Date();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getLongitude() {
         return longitude;
@@ -40,7 +59,7 @@ public class GeoData extends PersistentObject {
 
     @Override
     public String toString() {
-        return "GeoData{" + "Längengrad='" + getLongitude() + '\'' + ", Breitengrad='" + getLatitude() +
+        return "GeoData{" + "username" + getUsername() + "Längengrad='" + getLongitude() + '\'' + ", Breitengrad='" + getLatitude() +
                 '}';
     }
 }
