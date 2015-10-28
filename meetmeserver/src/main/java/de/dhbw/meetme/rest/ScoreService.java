@@ -24,32 +24,35 @@ import javax.ws.rs.Produces;
 
 public class ScoreService {
 
-        private static final Logger log = LoggerFactory.getLogger(ScoreService.class);
+    private static final Logger log = LoggerFactory.getLogger(ScoreService.class);
 
-        @Inject
-        UserDao userDao;
-        @Inject
-        Transaction transaction;
-        @Inject
-        ScoreDao scoreDao;
+    @Inject
+    UserDao userDao;
+    @Inject
+    Transaction transaction;
+    @Inject
+    ScoreDao scoreDao;
 
 
-        @Path("/{username}/{password}/{score}")
-        @POST
-        public void post(@PathParam("username") String username, @PathParam("password") String password, @PathParam("score") int score) {
-            transaction.begin();
-            log.debug("Update ScoreBoard for user " + username);
+    @Path("/{username}/{password}/{score}")
+    @POST
+    public void post(@PathParam("username") String username, @PathParam("password") String password, @PathParam("score") int score) {
 
-            User user = userDao.findByUserName(username); //Pull out the requested UserName
+        transaction.begin();
 
-            ScoreBoard scoreBoard = user.getScoreBoard();
+        log.debug("Update ScoreBoard for user " + username);
+
+            ScoreBoard scoreBoard = scoreDao.findByUserName(username); //Pull out the requested UserName
             scoreBoard.setScore(score);
             scoreDao.persist(scoreBoard);
-
-
-            user.setScoreBoard(scoreBoard);
-            user.setUsername(username);
-            userDao.persist(user);
             transaction.commit(); //Commit changes to the database
-        }
+
+        } /**catch (Exception e) {
+            ScoreBoard scoreBoard = new ScoreBoard();
+            scoreBoard.setUsername(username);
+            scoreBoard.setScore(score);
+            scoreDao.persist(scoreBoard);
+            transaction.commit(); //Commit changes to the database
+        }*/
+
     }
