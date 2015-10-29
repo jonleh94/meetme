@@ -1,7 +1,9 @@
 package de.dhbw.meetme.servlet;
 
 import de.dhbw.meetme.database.Transaction;
+import de.dhbw.meetme.database.dao.ScoreDao;
 import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.domain.ScoreBoard;
 import de.dhbw.meetme.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,8 @@ public class UserServlet extends HttpServlet {
     UserDao userDao;
     @Inject
     Transaction transaction;
+    @Inject
+    ScoreDao scoreDao;
 
     // generate MD5 Hash of password and return as string
     private static String getMD5(String pass) throws IOException {
@@ -83,6 +87,7 @@ public class UserServlet extends HttpServlet {
 
         transaction.begin();
         User user = new User(); //Create new user
+        ScoreBoard scoreBoard = new ScoreBoard();
         Collection<User> users = userDao.list();
 
         /** ----NEW USER IS CREATED WITH ATTRIBUTES */
@@ -97,6 +102,7 @@ public class UserServlet extends HttpServlet {
         String email = request.getParameter("E-mail");
         String gender = "unknown";  // request.getParameter("Gender");
         String team = getRandomTeam();
+        int score = 0;
 
         //Generate 4-Digit Pin
         int meetmecode = generatePin();
@@ -266,10 +272,13 @@ public class UserServlet extends HttpServlet {
         /** SET ALL USER ATTRIBUTES */
 
         user.setAllAttributes(team, true, password, email, username, firstName, lastName, location, gender, meetmecode);
+        scoreBoard.setScore(score);
+        scoreBoard.setUsername(username);
 
 
         log.debug(user.toString());  //little test, can be removed when everything is working
         userDao.persist(user);
+        scoreDao.persist(scoreBoard);
         transaction.commit();
 
 
