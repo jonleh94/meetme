@@ -36,7 +36,7 @@ public class ScoreService {
 
     @Path("/{username}/{password}/{score}")
     @POST
-    public void post(@PathParam("username") String username, @PathParam("password") String password, @PathParam("score") int score) {
+    public String post(@PathParam("username") String username, @PathParam("password") String password, @PathParam("score") int score) {
 
         transaction.begin();
 
@@ -45,14 +45,10 @@ public class ScoreService {
             ScoreBoard scoreBoard = scoreDao.findByUserName(username); //Pull out the requested UserName
             scoreBoard.setScore(score);
             scoreDao.persist(scoreBoard);
-            transaction.commit(); //Commit changes to the database
 
-        } /**catch (Exception e) {
-            ScoreBoard scoreBoard = new ScoreBoard();
-            scoreBoard.setUsername(username);
-            scoreBoard.setScore(score);
-            scoreDao.persist(scoreBoard);
-            transaction.commit(); //Commit changes to the database
-        }*/
+        transaction.commit(); //Commit changes to the database
 
+        return "SERVER: Operation Succesfull!";
     }
+
+}
