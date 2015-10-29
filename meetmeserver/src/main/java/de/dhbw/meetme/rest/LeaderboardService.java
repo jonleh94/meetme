@@ -12,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by schabi on 27.10.2015.
@@ -32,11 +33,11 @@ public class LeaderboardService {
 
     @Path("/list")
     @GET
-    public Collection<ScoreBoard> getLeaderboard() {
+    public List<String> getLeaderboard() {
         transaction.begin();
         log.debug("Get Leaderboard");
 
-        Collection<ScoreBoard> scoreBoards = scoreDao.listScore();
+        List<String> scoreBoards = scoreDao.listScore();
         transaction.commit();
         return scoreBoards;
     }

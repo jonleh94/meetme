@@ -7,6 +7,7 @@ import de.dhbw.meetme.domain.UuidId;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.Query;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by schabi on 03.10.2015.
@@ -26,9 +27,9 @@ public class ScoreDao extends JpaDao <UuidId, ScoreBoard>{
         return (ScoreBoard) query.getResultList().get(0);
     }
 
-    public Collection<ScoreBoard> listScore() {
-        Query q = entityManager.createQuery("SELECT s from " + entityClass.getName() + " s ORDER BY s.score DESC");
-        return (Collection<ScoreBoard>) q.getResultList();
+    public List<String> listScore() {
+        Query q = entityManager.createQuery("SELECT s.username from " + entityClass.getName() + " s"); //ORDER BY s.score DESC
+        return  q.getResultList();
     }
 
 }
