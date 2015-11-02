@@ -14,7 +14,16 @@ public class ScoreBoard extends PersistentObject {
 
     private String username;
     private int score;
+    private String team;
     private ScoreBoard scoreBoard;
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
 
     public ScoreBoard getScoreBoard() {
         return scoreBoard;
