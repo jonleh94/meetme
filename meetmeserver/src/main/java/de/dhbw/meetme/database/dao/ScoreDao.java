@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @ApplicationScoped
-public class ScoreDao extends JpaDao <UuidId, ScoreBoard>{
+public class ScoreDao extends JpaDao<UuidId, ScoreBoard> {
 
     public ScoreDao() {
         super(ScoreBoard.class);
@@ -27,9 +27,16 @@ public class ScoreDao extends JpaDao <UuidId, ScoreBoard>{
         return (ScoreBoard) query.getResultList().get(0);
     }
 
-    public List<String> listScore() {
-        Query q = entityManager.createQuery("SELECT s.username from " + entityClass.getName() + " s"); //ORDER BY s.score DESC
-        return  q.getResultList();
+    public Collection<ScoreBoard> list() {
+        Query q = entityManager.createQuery("SELECT s from " + entityClass.getName() + " s ORDER BY s.score DESC");
+        return (Collection<ScoreBoard>) q.getResultList();
     }
+
+    public Long getTeamScore(String team) {
+        Query query = entityManager.createQuery("SELECT SUM(s.score) FROM ScoreBoard s WHERE s.team = :team");
+        query.setParameter("team", team);
+        return (Long) query.getSingleResult();
+    }
+
 
 }
