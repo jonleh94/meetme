@@ -273,6 +273,7 @@ public class UserServlet extends HttpServlet {
 
         user.setAllAttributes(team, true, password, email, username, firstName, lastName, location, gender, meetmecode);
         scoreBoard.setScore(score);
+        scoreBoard.setTeam(team);
         scoreBoard.setUsername(username);
 
 
