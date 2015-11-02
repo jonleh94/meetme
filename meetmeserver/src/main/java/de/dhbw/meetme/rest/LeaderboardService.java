@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.util.Collection;
 import java.util.List;
@@ -33,13 +34,50 @@ public class LeaderboardService {
 
     @Path("/list")
     @GET
-    public List<String> getLeaderboard() {
+    public Collection<ScoreBoard> getLeaderboard() {
         transaction.begin();
         log.debug("Get Leaderboard");
 
-        List<String> scoreBoards = scoreDao.listScore();
+        Collection<ScoreBoard> scoreBoards = scoreDao.list();
         transaction.commit();
         return scoreBoards;
+    }
+
+    @Path("/teamscore/{team}")
+    @GET
+    public Long getTeamScore(@PathParam("team") String team) {
+
+        transaction.begin();
+        log.debug("GET Score for Team: " + team + " ");
+
+        Long teamscore = scoreDao.getTeamScore(team);
+        transaction.commit();
+        return teamscore;
+    }
+
+    @Path("/get/topteam")
+    @GET
+    public String getTopTeam() {
+        String topteam = " ";
+        transaction.begin();
+        log.debug("GET Top Team");
+        try {
+
+            if (scoreDao.getTeamScore("blue") > scoreDao.getTeamScore("red")) {
+                topteam = "blue";
+            }
+            else if(scoreDao.getTeamScore("blue") < scoreDao.getTeamScore("red")){
+                topteam = "red";
+            }
+            else{
+                topteam = "Both teams are equal!!";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            transaction.commit();
+        }
+        return topteam;
     }
 
 
