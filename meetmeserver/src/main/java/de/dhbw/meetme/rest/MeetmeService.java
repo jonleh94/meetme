@@ -14,8 +14,6 @@ import javax.ws.rs.*;
 
 /**
  * Created by schabi on 12.10.2015.
- *
- *
  */
 
 
@@ -50,9 +48,7 @@ public class MeetmeService {
             scoreDao.persist(ownuserScoreBoard);
             transaction.commit();
             return "Operation successful, updated SCORE and RANK for User: " + ownusername;
-        }
-
-        else {
+        } else {
             return "WRONG CODE or WRONG TEAM, please try again";
         }
 
@@ -71,54 +67,4 @@ public class MeetmeService {
     }
 
 
-
-
 }
-/**
- * ------OLD VERSION WITH CONNECTED TABLES ---------------
- *
- *
- * public String postMeetme(@PathParam("ownusername") String ownusername, @PathParam("meetmecode") int meetmecode, @PathParam("foreignusername") String foreignusername) {
-
- transaction.begin();
- log.debug("Meetme Process for User " + ownusername);
-
- User ownuser = userDao.findByUserName(ownusername);
- User foreignuser = userDao.findByUserName(foreignusername);
-
- //Check if the entered code is equal to the Code in the database AND if the team is equal for both players
- if ((meetmecode == foreignuser.getMeetmecode()) && (ownuser.getTeam().equals(foreignuser.getTeam()))) {
-
- ScoreBoard ownuserScoreBoard = ownuser.getScoreBoard();
- ownuserScoreBoard.setScore(ownuserScoreBoard.getScore() + 1);
- scoreDao.persist(ownuserScoreBoard);
-
- ownuser.setScoreBoard(ownuserScoreBoard);
- userDao.persist(ownuser);
- transaction.commit();
- return "Operation successful, updated SCORE and RANK for User: " + ownusername;
- }
-
- else {
- return "WRONG CODE or WRONG TEAM, please try again";
- }
-
- }
-
- @Path("/{ownusername}")
- @GET
- public int getMeetmecode(@PathParam("ownusername") String ownusername) {
-
- transaction.begin();
- log.debug("MeetMe Pin for User " + ownusername);
-
- User ownuser = userDao.findByUserName(ownusername);
- return ownuser.getMeetmecode();
-
- }
-
- *
- *
- *
- *
- */
