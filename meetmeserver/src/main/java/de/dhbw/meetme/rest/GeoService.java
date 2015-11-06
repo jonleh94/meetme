@@ -7,12 +7,14 @@ import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.logic.GeoLogic;
+import de.dhbw.meetme.servlet.UserServlet;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import java.io.IOException;
 import java.util.Collection;
 
 
@@ -56,33 +58,38 @@ public class GeoService {
     @POST
     public String postToGeo(@PathParam("username") String username, @PathParam("password") String password, @PathParam("longitude") String longitude, @PathParam("latitude") String latitude) {
 
+        boolean check = false;
+
         transaction.begin();
         log.debug("Update GeoData for user " + username);
 
-
         GeoData thisgeoData = new GeoData();
-        //User thisuser = userDao.findByUserName(username);
+        User thisuser = userDao.findByUserName(username);
 
-        thisgeoData.setLatitude(latitude);   // Set Latitude from the URL command
-        thisgeoData.setLongitude(longitude); //Set Longitude from the URL command
-        thisgeoData.setUsername(username);
-        thisgeoData.setDate();
-        geoDao.persist(thisgeoData);
+        try {
+            if (thisuser.getPassword().equals(UserServlet.getMD5(password))) {
+                check = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        if (check) {
+            thisgeoData.setLatitude(latitude);   // Set Latitude from the URL command
+            thisgeoData.setLongitude(longitude); //Set Longitude from the URL command
+            thisgeoData.setUsername(username);
+            thisgeoData.setDate();
+            geoDao.persist(thisgeoData);
+        } else {
+            log.debug("COULD NOT UPDATE GEODATA: WRONG PASSWORD, please try again");
+            return "SERVER: WRONG PASSWORD, please try again";
+        }
 
         transaction.commit(); //Commit changes to the database
-
-        //if ((thisuser.getPassword()).equals(password.hashCode())) { //Password check, needs to be changed to the new password method
-
         return "SERVER: Operation successful, updated GeoData for User: " + username;
 
     }
-
-    /**
-     * else {
-     * log.debug("COULD NOT UPDATE GEODATA: WRONG PASSWORD, please try again");
-     * return "SERVER: WRONG PASSWORD, please try again";
-     * }
-     */
 
 
     @Path("/list")
