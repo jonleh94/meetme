@@ -28,8 +28,7 @@ public class UserService {
     UserDao userDao;
     @Inject
     Transaction transaction;
-    @Inject
-    GeoDao geoDao;
+
 
     @Path("/list")
     @GET
@@ -40,17 +39,7 @@ public class UserService {
         transaction.commit();
         return users;
     }
-/**
-    @Path("/listGeo")
-    @GET
-    public Collection<User> listGeo() {
-        log.debug("List users All");
-        transaction.begin();
-        Collection<User> users = userDao.listGeo();
-        transaction.commit();
-        return users;
-    }
-*/
+
     @Path("/get/{id}")
     @GET
     public User get(@PathParam("id") String id) {
