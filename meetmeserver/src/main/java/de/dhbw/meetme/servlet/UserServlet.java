@@ -43,7 +43,7 @@ public class UserServlet extends HttpServlet {
     ScoreDao scoreDao;
 
     // generate MD5 Hash of password and return as string
-    private static String getMD5(String pass) throws IOException {
+    public static String getMD5(String pass) throws IOException {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(pass.getBytes());
