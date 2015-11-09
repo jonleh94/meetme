@@ -53,10 +53,4 @@ public abstract class JpaDao<ID extends UuidId, TYPE extends PersistentObject> i
         return (Collection<TYPE>) q.getResultList();
     }
 
-    /**
-    public Collection<TYPE> listGeo(){
-        Query q = entityManager.createQuery("Select u, g from " + entityClass.getName() + " u" + " JOIN u.geoData g");
-        return  (Collection<TYPE>) q.getResultList();
-    }
-*/
 }
