@@ -20,12 +20,25 @@ import java.util.Date;
 public class GeoData extends PersistentObject {
 
     private String username;
-    private String longitude;        // Längengrad
-    private String latitude;         // Breitengrad
+    private double longitude;        // Längengrad
+    private double latitude;         // Breitengrad
     private Date date;
+    private String team;
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
 
     public Date getDate() {
         return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setDate() {
@@ -40,19 +53,19 @@ public class GeoData extends PersistentObject {
         this.username = username;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
