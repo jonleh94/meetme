@@ -56,7 +56,7 @@ public class GeoService {
 
     @Path("/{username}/{password}/{longitude}/{latitude}")
     @POST
-    public String postToGeo(@PathParam("username") String username, @PathParam("password") String password, @PathParam("longitude") String longitude, @PathParam("latitude") String latitude) {
+    public String postToGeo(@PathParam("username") String username, @PathParam("password") String password, @PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {
 
         boolean check = false;
 
@@ -80,6 +80,7 @@ public class GeoService {
             thisgeoData.setLongitude(longitude); //Set Longitude from the URL command
             thisgeoData.setUsername(username);
             thisgeoData.setDate();
+            thisgeoData.setTeam(userDao.findByUserName(username).getTeam());
             geoDao.persist(thisgeoData);
         } else {
             log.debug("COULD NOT UPDATE GEODATA: WRONG PASSWORD, please try again");
