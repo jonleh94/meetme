@@ -15,10 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 
-/**
- * Created by schabi on 27.09.2015.
- */
-
 @ApplicationScoped
 public class GeoDao extends JpaDao<UuidId, GeoData> {
 
@@ -31,5 +27,12 @@ public class GeoDao extends JpaDao<UuidId, GeoData> {
         Query q = entityManager.createQuery("SELECT g FROM " + entityClass.getName() + " g");
         return q.getResultList();
     }
+
+    public GeoData findByUserName(String username) {
+        Query query = entityManager.createQuery("SELECT g FROM GeoData g WHERE g.username = :username ORDER BY g.date DESC");
+        query.setParameter("username", username);
+        return (GeoData) query.getResultList().get(0);
+    }
+
 
 }
