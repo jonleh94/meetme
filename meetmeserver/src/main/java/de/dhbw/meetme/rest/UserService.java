@@ -84,8 +84,12 @@ public class UserService {
             if (thisuser.getPassword().equals(UserServlet.getMD5(password))) {
                 check = true;
             }
+
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        catch (Exception exe){
+            exe.printStackTrace();
         }
         transaction.commit();
         return check;
