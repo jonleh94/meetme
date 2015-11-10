@@ -46,6 +46,8 @@ public class GeoService {
     GeoDao geoDao;
     @Inject
     UserDao userDao;
+    @Inject
+    GeoLogic geoLogic;
 
     @Path("/get/distance/{lat1}/{long1}/{lat2}/{long2}")
     @GET
@@ -58,38 +60,14 @@ public class GeoService {
     @POST
     public String postToGeo(@PathParam("username") String username, @PathParam("password") String password, @PathParam("longitude") double longitude, @PathParam("latitude") double latitude) {
 
-        boolean check = false;
-
+        String returnvalue;
         transaction.begin();
         log.debug("Update GeoData for user " + username);
 
-        GeoData thisgeoData = new GeoData();
-        User thisuser = userDao.findByUserName(username);
-
-        try {
-            if (thisuser.getPassword().equals(UserServlet.getMD5(password))) {
-                check = true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        if (check) {
-            thisgeoData.setLatitude(latitude);   // Set Latitude from the URL command
-            thisgeoData.setLongitude(longitude); //Set Longitude from the URL command
-            thisgeoData.setUsername(username);
-            thisgeoData.setDate();
-            thisgeoData.setTeam(userDao.findByUserName(username).getTeam());
-            geoDao.persist(thisgeoData);
-        } else {
-            log.debug("COULD NOT UPDATE GEODATA: WRONG PASSWORD, please try again");
-            return "SERVER: WRONG PASSWORD, please try again";
-        }
+        returnvalue = geoLogic.postToGeo(username, password, longitude, latitude);
 
         transaction.commit(); //Commit changes to the database
-        return "SERVER: Operation successful, updated GeoData for User: " + username;
-
+        return returnvalue;
     }
 
 
