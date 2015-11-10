@@ -6,6 +6,8 @@ import de.dhbw.meetme.database.dao.UserDao;
 import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.domain.UuidId;
+import de.dhbw.meetme.logic.GeoLogic;
+import de.dhbw.meetme.logic.UserLogic;
 import de.dhbw.meetme.servlet.UserServlet;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
@@ -30,6 +32,8 @@ public class UserService {
     UserDao userDao;
     @Inject
     Transaction transaction;
+    @Inject
+    UserLogic userLogic;
 
 
     @Path("/list")
@@ -74,24 +78,13 @@ public class UserService {
     @Path("/check/{username}/{password}")
     @GET
     public boolean checkPassword(@PathParam("username") String username, @PathParam("password") String password) {
+        boolean check;
 
-        boolean check = false;
         log.debug("Check Password for " + username);
         transaction.begin();
-
-        try {
-            User thisuser = userDao.findByUserName(username);
-            if (thisuser.getPassword().equals(UserServlet.getMD5(password))) {
-                check = true;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (Exception exe){
-            exe.printStackTrace();
-        }
+        check = userLogic.checkPassword(username, password);
         transaction.commit();
         return check;
+
     }
 }
