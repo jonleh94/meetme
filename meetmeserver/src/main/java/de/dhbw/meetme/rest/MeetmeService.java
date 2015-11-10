@@ -15,9 +15,6 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 
-/**
- * Created by schabi on 12.10.2015.
- */
 
 
 @Path("/api/meetme")
@@ -66,7 +63,7 @@ public class MeetmeService {
             }
         } else {
             log.debug("Über 100 Meter");
-            return "SERVER: DISTANCE > 100m CANNOT START MEETME";
+            return "SERVER: DISTANCE > 100m   ------------>  CAN'T START MEETME PROCESS";
         }
 
     }
