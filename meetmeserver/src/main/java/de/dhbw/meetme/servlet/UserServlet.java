@@ -1,8 +1,10 @@
 package de.dhbw.meetme.servlet;
 
 import de.dhbw.meetme.database.Transaction;
+import de.dhbw.meetme.database.dao.GeoDao;
 import de.dhbw.meetme.database.dao.ScoreDao;
 import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.ScoreBoard;
 import de.dhbw.meetme.domain.User;
 import org.slf4j.Logger;
@@ -41,6 +43,8 @@ public class UserServlet extends HttpServlet {
     Transaction transaction;
     @Inject
     ScoreDao scoreDao;
+    @Inject
+    GeoDao geoDao;
 
     // generate MD5 Hash of password and return as string
     public static String getMD5(String pass) throws IOException {
@@ -88,6 +92,7 @@ public class UserServlet extends HttpServlet {
         transaction.begin();
         User user = new User(); //Create new user
         ScoreBoard scoreBoard = new ScoreBoard();
+        GeoData geoData = new GeoData();
         Collection<User> users = userDao.list();
 
         /** ----NEW USER IS CREATED WITH ATTRIBUTES */
@@ -275,10 +280,15 @@ public class UserServlet extends HttpServlet {
         scoreBoard.setScore(score);
         scoreBoard.setTeam(team);
         scoreBoard.setUsername(username);
+        geoData.setLongitude(0);
+        geoData.setLatitude(0);
+        geoData.setUsername(username);
+        geoData.setDate();
+        geoData.setTeam(team);
 
 
-        log.debug(user.toString());  //little test, can be removed when everything is working
         userDao.persist(user);
+        geoDao.persist(geoData);
         scoreDao.persist(scoreBoard);
         transaction.commit();
 
