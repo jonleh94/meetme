@@ -45,15 +45,16 @@ public class LeaderboardService {
 
     @Path("/teamscore/{team}")
     @GET
-    public Long getTeamScore(@PathParam("team") String team) {
+    public long getTeamScore(@PathParam("team") String team) {
 
         transaction.begin();
         log.debug("GET Score for Team: " + team + " ");
 
-        Long teamscore = scoreDao.getTeamScore(team);
+        long teamscore = scoreDao.getTeamScore(team);
         transaction.commit();
         return teamscore;
     }
+
 
     @Path("/get/topteam")
     @GET

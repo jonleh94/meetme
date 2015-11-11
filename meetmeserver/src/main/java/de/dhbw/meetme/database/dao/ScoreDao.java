@@ -32,11 +32,13 @@ public class ScoreDao extends JpaDao<UuidId, ScoreBoard> {
         return (Collection<ScoreBoard>) q.getResultList();
     }
 
-    public Long getTeamScore(String team) {
+    public long getTeamScore(String team) {
         Query query = entityManager.createQuery("SELECT SUM(s.score) FROM ScoreBoard s WHERE s.team = :team");
         query.setParameter("team", team);
         return (Long) query.getSingleResult();
     }
+
+
 
 
 }
