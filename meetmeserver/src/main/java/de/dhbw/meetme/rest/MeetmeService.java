@@ -1,12 +1,15 @@
 package de.dhbw.meetme.rest;
 
 import de.dhbw.meetme.database.Transaction;
+import de.dhbw.meetme.database.dao.FriendsDao;
 import de.dhbw.meetme.database.dao.GeoDao;
 import de.dhbw.meetme.database.dao.ScoreDao;
 import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.domain.Friends;
 import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.ScoreBoard;
 import de.dhbw.meetme.domain.User;
+import de.dhbw.meetme.logic.FriendsLogic;
 import de.dhbw.meetme.logic.GeoLogic;
 import groovy.lang.Singleton;
 import org.slf4j.Logger;
@@ -14,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-
 
 
 @Path("/api/meetme")
@@ -32,6 +34,10 @@ public class MeetmeService {
     ScoreDao scoreDao;
     @Inject
     Transaction transaction;
+    @Inject
+    FriendsLogic friendsLogic;
+    @Inject
+    FriendsDao friendsDao;
 
 
     @Path("/{ownusername}/{meetmecode}/{foreignusername}")
@@ -50,23 +56,29 @@ public class MeetmeService {
 
         double checkdist = GeoLogic.getDistance(owngeoData.getLatitude(), owngeoData.getLongitude(), foreigngeoData.getLatitude(), foreigngeoData.getLongitude());
 
-        if (checkdist < 0.1) {
-            log.debug("Unter 100 Meter!");
-            //Check if the entered code is equal to the Code in the database AND if the team is equal for both players
-            if ((meetmecode == foreignuser.getMeetmecode()) && (ownuser.getTeam().equals(foreignuser.getTeam()))) {
-                ownuserScoreBoard.setScore(ownuserScoreBoard.getScore() + 1);
-                scoreDao.persist(ownuserScoreBoard);
-                transaction.commit();
-                return "Operation successful, updated SCORE and RANK for User: " + ownusername;
+      if (!(friendsDao.checkFriends(ownusername, foreignusername))){ //checks if the user has already met the other user
+            if (checkdist < 0.1) {
+                log.debug("Unter 100 Meter!");
+                //Check if the entered code is equal to the Code in the database AND if the team is equal for both players
+                if ((meetmecode == foreignuser.getMeetmecode()) && (ownuser.getTeam().equals(foreignuser.getTeam()))) {
+                    ownuserScoreBoard.setScore(ownuserScoreBoard.getScore() + 1);
+                    friendsLogic.setNewFriend(ownusername, foreignusername); //Adds new entry to the Friends Table :)
+                    scoreDao.persist(ownuserScoreBoard);
+                    transaction.commit();
+                    return "Operation successful, updated SCORE and RANK for User: " + ownusername;
+                } else {
+                    return "WRONG CODE or WRONG TEAM, please try again";
+                }
             } else {
-                return "WRONG CODE or WRONG TEAM, please try again";
+                log.debug("Über 100 Meter");
+                return "SERVER: DISTANCE > 100m   ------------>  CAN'T START MEETME PROCESS";
             }
-        } else {
-            log.debug("Über 100 Meter");
-            return "SERVER: DISTANCE > 100m   ------------>  CAN'T START MEETME PROCESS";
-        }
 
+        } else {
+   return "SERVER: You have already met " + foreignusername + "! move on buddy life goes on";
     }
+}
+
 
     @Path("/{ownusername}")
     @GET
