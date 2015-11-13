@@ -78,7 +78,7 @@ public class GeoService {
 
         log.debug("GET GeoData LIST");
 
-        Collection<GeoData> geoDatas = geoDao.listGeo();
+        Collection<GeoData> geoDatas =  geoDao.listGeo();
         transaction.commit();
         return geoDatas;
     }
