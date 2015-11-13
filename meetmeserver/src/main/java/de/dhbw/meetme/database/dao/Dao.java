@@ -15,5 +15,5 @@ public interface Dao<ID, TYPE> { //Interface that is able to take the Types "ID"
 
     Collection<TYPE> list();
 
-   // Collection<TYPE> listGeo();
+
 }
