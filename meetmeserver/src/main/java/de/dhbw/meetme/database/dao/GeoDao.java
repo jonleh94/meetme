@@ -35,4 +35,10 @@ public class GeoDao extends JpaDao<UuidId, GeoData> {
     }
 
 
+    public Collection <GeoData> listGeoNew() {
+        Query query = entityManager.createQuery("SELECT g FROM " + entityClass.getName() + " g WHERE g.date = (SELECT MAX(g.date) FROM GeoData g GROUP BY g.username) GROUP BY g.username");
+        return query.getResultList();
+    }
+
+
 }
