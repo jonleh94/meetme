@@ -18,21 +18,6 @@ import java.io.IOException;
 import java.util.Collection;
 
 
-/**
- * Webservice to handle the HTTP request ..../api/username/password/longitude/latitude
- * updates a User with GeoData :)
- * works properly
- * <p>
- * <p>
- * TESTED:
- * works when a User has no GEODATA and can update a Users GeoData when he has one allready
- * no GeoData works with Exception e handling which is not optimal
- * <p>
- * TODO:
- * FIX the Exception e Handling and insert a more specific error handling
- */
-
-
 @Path("/api/geo")
 @Produces({"application/json"}) // mime type
 @Singleton
@@ -51,9 +36,12 @@ public class GeoService {
 
     @Path("/get/distance/{lat1}/{long1}/{lat2}/{long2}")
     @GET
-    public static double getDistance(@PathParam("lat1") double lat1, @PathParam("long1") double long1, @PathParam("lat2") double lat2, @PathParam("long2") double long2) {
-
-        return GeoLogic.getDistance(lat1, long1, lat2, long2);
+    public double getDistance(@PathParam("lat1") double lat1, @PathParam("long1") double long1, @PathParam("lat2") double lat2, @PathParam("long2") double long2) {
+        double dist;
+        transaction.begin();
+        dist =  GeoLogic.getDistance(lat1, long1, lat2, long2);
+        transaction.commit();
+        return dist;
     }
 
     @Path("/{username}/{password}/{longitude}/{latitude}")
@@ -78,7 +66,7 @@ public class GeoService {
 
         log.debug("GET GeoData LIST");
 
-        Collection<GeoData> geoDatas =  geoDao.listGeo();
+        Collection<GeoData> geoDatas = geoDao.listGeo();
         transaction.commit();
         return geoDatas;
     }
