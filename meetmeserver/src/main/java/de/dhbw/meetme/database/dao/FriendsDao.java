@@ -41,6 +41,7 @@ public class FriendsDao extends JpaDao<UuidId, Friends> {
         try {
             newFriend = (Friends) query.getSingleResult();
         } catch (NoResultException e) {
+            e.printStackTrace();
             return false;
         }
         return true;
