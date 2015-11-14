@@ -83,13 +83,14 @@ public class MeetmeService {
     @Path("/{ownusername}")
     @GET
     public int getMeetmecode(@PathParam("ownusername") String ownusername) {
-
+        int meetmecode;
         transaction.begin();
         log.debug("MeetMe Pin for User " + ownusername);
 
         User ownuser = userDao.findByUserName(ownusername);
-        return ownuser.getMeetmecode();
-
+        meetmecode = ownuser.getMeetmecode();
+        transaction.commit();
+        return meetmecode;
     }
 
 
