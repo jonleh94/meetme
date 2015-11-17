@@ -58,7 +58,7 @@ public class FriendService {
     public boolean checkFriends(@PathParam("ownusername") String ownusername, @PathParam("userfriend") String userfriend) {
         boolean check;
         transaction.begin();
-        log.debug("CHECK Friendship of" + ownusername + " and " + userfriend);
+        log.debug("CHECK Friendship of " + ownusername + " and " + userfriend);
 
         check = friendsDao.checkFriends(ownusername, userfriend);
         transaction.commit();
