@@ -24,6 +24,15 @@ public class GeoData extends PersistentObject {
     private double latitude;         // Breitengrad
     private Date date;
     private String team;
+    private boolean active;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public String getTeam() {
         return team;

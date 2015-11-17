@@ -276,7 +276,7 @@ public class UserServlet extends HttpServlet {
 
         /** SET ALL USER ATTRIBUTES */
 
-        user.setAllAttributes(team, true, password, email, username, firstName, lastName, location, gender, meetmecode);
+        user.setAllAttributes(team, false, password, email, username, firstName, lastName, location, gender, meetmecode);
         scoreBoard.setScore(score);
         scoreBoard.setTeam(team);
         scoreBoard.setUsername(username);
@@ -285,6 +285,7 @@ public class UserServlet extends HttpServlet {
         geoData.setUsername(username);
         geoData.setDate();
         geoData.setTeam(team);
+        geoData.setActive(false);
 
 
         userDao.persist(user);

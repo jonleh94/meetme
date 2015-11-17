@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class GeoLogic {
 
@@ -57,6 +60,7 @@ public class GeoLogic {
             thisgeoData.setLongitude(longitude); //Set Longitude from the URL command
             thisgeoData.setUsername(username);
             thisgeoData.setDate();
+            thisgeoData.setActive(true);
             thisgeoData.setTeam(userDao.findByUserName(username).getTeam());
             geoDao.persist(thisgeoData);
         } else {
@@ -64,6 +68,20 @@ public class GeoLogic {
             return "SERVER: WRONG PASSWORD, please try again";
         }
         return "SERVER: Operation successful, updated GeoData for User: " + username;
+    }
+
+    public Collection <GeoData> iterateAll(Collection<String> thislist){
+        Collection <GeoData> geoDataCollection;
+        geoDataCollection = new ArrayList<>();
+
+
+        for (String s : thislist){
+            log.debug(s);
+            GeoData geoData = geoDao.findByUserName(s);
+            log.debug(geoData.toString());
+            geoDataCollection.add(geoData);
+        }
+        return geoDataCollection;
     }
 
 

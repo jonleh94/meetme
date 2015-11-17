@@ -1,6 +1,8 @@
 package de.dhbw.meetme.logic;
 
+import de.dhbw.meetme.database.dao.GeoDao;
 import de.dhbw.meetme.database.dao.UserDao;
+import de.dhbw.meetme.domain.GeoData;
 import de.dhbw.meetme.domain.User;
 import de.dhbw.meetme.rest.UserService;
 import de.dhbw.meetme.servlet.UserServlet;
@@ -17,6 +19,8 @@ public class UserLogic {
 
     @Inject
     UserDao userDao;
+    @Inject
+    GeoDao geoDao;
 
 
     public boolean checkPassword(String username, String password) {
@@ -30,6 +34,7 @@ public class UserLogic {
 
         } catch (IOException e) {
             e.printStackTrace();
+            log.debug(e.toString());
         } catch (Exception exe) {
             exe.printStackTrace();
         }
@@ -37,6 +42,30 @@ public class UserLogic {
         return check;
 
     }
+    public boolean setActive(String username){
+        try{
+            GeoData thisgeoData = geoDao.findByUserName(username);
+            thisgeoData.setActive(true);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            log.debug(e.toString());
+            return false;
+        }
+        return true;
+    }
+
+    public void logOut(String username){
+        try{
+            geoDao.logOut(username);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            log.debug(e.toString());
+        }
+    }
+
+
 
 
 }

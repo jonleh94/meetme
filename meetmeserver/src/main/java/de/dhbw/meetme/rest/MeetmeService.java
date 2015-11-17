@@ -24,6 +24,8 @@ import javax.ws.rs.*;
 @Singleton
 public class MeetmeService {
 
+    //TODO: seperate the service and the logic into the logic activity
+
     private static final Logger log = LoggerFactory.getLogger(MeetmeService.class);
 
     @Inject
@@ -38,12 +40,14 @@ public class MeetmeService {
     FriendsLogic friendsLogic;
     @Inject
     FriendsDao friendsDao;
+    @Inject
+    GeoLogic geoLogic;
 
 
     @Path("/{ownusername}/{meetmecode}/{foreignusername}")
     @POST
     public String postMeetme(@PathParam("ownusername") String ownusername, @PathParam("meetmecode") int meetmecode, @PathParam("foreignusername") String foreignusername) {
-
+        String result;
         transaction.begin();
         log.debug("Meetme Process for User " + ownusername);
 
@@ -56,7 +60,7 @@ public class MeetmeService {
 
         double checkdist = GeoLogic.getDistance(owngeoData.getLatitude(), owngeoData.getLongitude(), foreigngeoData.getLatitude(), foreigngeoData.getLongitude());
 
-      if (!(friendsDao.checkFriends(ownusername, foreignusername))){ //checks if the user has already met the other user
+        if (!(friendsDao.checkFriends(ownusername, foreignusername))) { //checks if the user has already met the other user
             if (checkdist < 0.1) {
                 log.debug("Unter 100 Meter!");
                 //Check if the entered code is equal to the Code in the database AND if the team is equal for both players
@@ -64,20 +68,21 @@ public class MeetmeService {
                     ownuserScoreBoard.setScore(ownuserScoreBoard.getScore() + 1);
                     friendsLogic.setNewFriend(ownusername, foreignusername); //Adds new entry to the Friends Table :)
                     scoreDao.persist(ownuserScoreBoard);
-                    transaction.commit();
-                    return "Operation successful, updated SCORE and RANK for User: " + ownusername;
+                    result = "Operation successful, updated SCORE and RANK for User: " + ownusername;
                 } else {
-                    return "WRONG CODE or WRONG TEAM, please try again";
+                    result = "WRONG CODE or WRONG TEAM, please try again";
                 }
             } else {
                 log.debug("Über 100 Meter");
-                return "SERVER: DISTANCE > 100m   ------------>  CAN'T START MEETME PROCESS";
+                result = "SERVER: DISTANCE > 100m   ------------>  CAN'T START MEETME PROCESS";
             }
 
         } else {
-   return "SERVER: You have already met " + foreignusername + "! move on buddy life goes on";
+            result = "SERVER: You have already met " + foreignusername + "! move on buddy life goes on";
+        }
+        transaction.commit();
+        return result;
     }
-}
 
 
     @Path("/{ownusername}")

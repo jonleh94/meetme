@@ -83,8 +83,18 @@ public class UserService {
         log.debug("Check Password for " + username);
         transaction.begin();
         check = userLogic.checkPassword(username, password);
+        userLogic.setActive(username);
         transaction.commit();
         return check;
+    }
 
+    @Path("/logout/{username}")
+    @POST
+    public String logOut(@PathParam("username") String username) {
+        log.debug("Log Out user:  " + username);
+        transaction.begin();
+        userLogic.logOut(username);
+        transaction.commit();
+        return "Operation Successfull: LogOut user: " + username;
     }
 }
