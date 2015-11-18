@@ -26,24 +26,24 @@ public class FriendsDao extends JpaDao<UuidId, Friends> {
     }
 
 
-    public Collection<Friends> listFriendsList(String ownusername) {
-        Query query = entityManager.createQuery("SELECT f FROM Friends f WHERE f.ownusername = :ownusername");
+    public Collection<String> listFriendsList(String ownusername) {
+        Query query = entityManager.createQuery("SELECT f.userfriend FROM Friends f WHERE f.ownusername = :ownusername GROUP BY f.userfriend");
         query.setParameter("ownusername", ownusername);
         return query.getResultList();
     }
 
 
     public boolean checkFriends(String ownusername, String userfriend) {
-        Friends newFriend = new Friends();
         Query query = entityManager.createQuery("SELECT f FROM Friends f WHERE f.ownusername = :ownusername AND f.userfriend = :userfriend");
         query.setParameter("ownusername", ownusername);
         query.setParameter("userfriend", userfriend);
-        try {
-            newFriend = (Friends) query.getSingleResult();
-        } catch (NoResultException e) {
-            e.printStackTrace();
+
+        List newFriendList = query.getResultList();
+        if (newFriendList.isEmpty()) {
+            log.debug("User: " + ownusername +" has an empty list for User: " + userfriend);
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
 }

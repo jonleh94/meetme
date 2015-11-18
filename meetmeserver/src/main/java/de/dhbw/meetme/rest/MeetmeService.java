@@ -62,24 +62,32 @@ public class MeetmeService {
 
         if (!(friendsDao.checkFriends(ownusername, foreignusername))) { //checks if the user has already met the other user
             if (checkdist < 0.1) {
-                log.debug("Unter 100 Meter!");
+                log.debug("SERVER: Unter 100 Meter!");
                 //Check if the entered code is equal to the Code in the database AND if the team is equal for both players
-                if ((meetmecode == foreignuser.getMeetmecode()) && (ownuser.getTeam().equals(foreignuser.getTeam()))) {
-                    ownuserScoreBoard.setScore(ownuserScoreBoard.getScore() + 1);
-                    friendsLogic.setNewFriend(ownusername, foreignusername); //Adds new entry to the Friends Table :)
-                    scoreDao.persist(ownuserScoreBoard);
-                    result = "Operation successful, updated SCORE and RANK for User: " + ownusername;
+                if ((meetmecode == foreignuser.getMeetmecode())) {
+                    if (ownuser.getTeam().equals(foreignuser.getTeam())) {
+                        ownuserScoreBoard.setScore(ownuserScoreBoard.getScore() + 1);
+                        friendsLogic.setNewFriend(ownusername, foreignusername); //Adds new entry to the Friends Table :)
+                        scoreDao.persist(ownuserScoreBoard);
+                        log.debug("Operation successful, updated SCORE and RANK for User: " + ownusername);
+                        result = "true";
+                    } else {
+                        log.debug("SERVER: WRONG TEAM");
+                        result = "wrongteam";
+                    }
                 } else {
-                    result = "WRONG CODE or WRONG TEAM, please try again";
+                    log.debug("SERVER: WRONG CODE");
+                    result = "wrongcode";
                 }
             } else {
-                log.debug("Über 100 Meter");
-                result = "SERVER: DISTANCE > 100m   ------------>  CAN'T START MEETME PROCESS";
+                log.debug("SERVER: DISTANCE > 100m");
+                result = "toofar";
             }
-
         } else {
-            result = "SERVER: You have already met " + foreignusername + "! move on buddy life goes on";
+            log.debug("SERVER: You have already met " + foreignusername + "! move on buddy life goes on");
+            result = "friends";
         }
+
         transaction.commit();
         return result;
     }

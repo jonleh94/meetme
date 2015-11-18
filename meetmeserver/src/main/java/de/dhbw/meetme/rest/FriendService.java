@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -39,14 +40,13 @@ public class FriendService {
     }
 
     //List all the user's(ownuser) friends
-    @Path("/list/{ownusername}/{userfriend}")
+    @Path("/list/{ownusername}")
     @GET
-    public Collection<Friends> getFriendList(@PathParam("ownusername") String ownusername, @PathParam("userfriend") String userfriend) {
+    public Collection<String> getFriendList(@PathParam("ownusername") String ownusername) {
 
         transaction.begin();
         log.debug("GET Friendslist");
-
-        Collection<Friends> friendList = friendsDao.listFriendsList(ownusername);
+        Collection<String> friendList = friendsDao.listFriendsList(ownusername);
         transaction.commit();
         return friendList;
     }
@@ -63,9 +63,6 @@ public class FriendService {
         check = friendsDao.checkFriends(ownusername, userfriend);
         transaction.commit();
         return check; //return false if the users are not friends and returns true if the users have already met
-
-
     }
-
 
 }
