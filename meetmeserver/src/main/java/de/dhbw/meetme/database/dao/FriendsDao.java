@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,10 +27,10 @@ public class FriendsDao extends JpaDao<UuidId, Friends> {
     }
 
 
-    public Collection<String> listFriendsList(String ownusername) {
-        Query query = entityManager.createQuery("SELECT f.userfriend FROM Friends f WHERE f.ownusername = :ownusername GROUP BY f.userfriend");
-        query.setParameter("ownusername", ownusername);
-        return query.getResultList();
+    public List<String> listFriendsList(String ownusername) {
+        TypedQuery<String> tquery = entityManager.createQuery("SELECT f.userfriend FROM Friends f WHERE f.ownusername = :ownusername", String.class);
+        tquery.setParameter("ownusername", ownusername);
+        return tquery.getResultList();
     }
 
 

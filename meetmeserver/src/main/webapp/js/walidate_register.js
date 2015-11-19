@@ -23,7 +23,7 @@ $('#login').walidate({
 $('#username').walidate('validate', {
                       // default: undefined;      (string)
     //required: false,                        // default: true;           (boolean)
-    expression: /^[a-zA-Z]{3,}$/,           // default: undefined;      (Regex)
+    expression: /^[a-zA-Z0-9]{3,}$/,           // default: undefined;      (Regex)
     eventHandler: 'blur keyup',             // default: blur change;    (string)
     valid: function() {                     // default: undefined;      (function)  runs if value is valid
         console.log('Vorname gültig!');

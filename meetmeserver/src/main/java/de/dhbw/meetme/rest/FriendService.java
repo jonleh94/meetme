@@ -10,8 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 @Path("/api/friend")
@@ -42,13 +44,14 @@ public class FriendService {
     //List all the user's(ownuser) friends
     @Path("/list/{ownusername}")
     @GET
-    public Collection<String> getFriendList(@PathParam("ownusername") String ownusername) {
+    public String getFriendList(@PathParam("ownusername") String ownusername) {
 
         transaction.begin();
         log.debug("GET Friendslist");
-        Collection<String> friendList = friendsDao.listFriendsList(ownusername);
+        List<String> friendList = friendsDao.listFriendsList(ownusername);
+        log.debug(friendList.toString());
         transaction.commit();
-        return friendList;
+        return friendList.toString();
     }
 
 

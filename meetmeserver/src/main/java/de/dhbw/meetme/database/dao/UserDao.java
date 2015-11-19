@@ -41,4 +41,10 @@ public class UserDao extends JpaDao<UuidId, User> {
         query.setParameter("username", username);
         return (User) query.getResultList().get(0);
     }
+
+    public String findUserColor(String username){
+        Query query = entityManager.createQuery("SELECT u.team FROM User u WHERE u.username = :username");
+        query.setParameter("username", username);
+        return (String) query.getSingleResult();
+    }
 }

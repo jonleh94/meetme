@@ -21,7 +21,6 @@ import java.util.Collection;
 @Path("/api/geo")
 @Produces({"application/json"}) // mime type
 @Singleton
-
 public class GeoService {
     private static final Logger log = LoggerFactory.getLogger(GeoService.class);
 

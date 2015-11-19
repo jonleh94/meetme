@@ -97,4 +97,16 @@ public class UserService {
         transaction.commit();
         return "Operation Successfull: LogOut user: " + username;
     }
+
+    @Path("/get/team/{username}")
+    @GET
+    public String findUserColor(@PathParam("username") String username) {
+        String result;
+        log.debug("GET Team for User " + username);
+
+        transaction.begin();
+        result = userDao.findUserColor(username);
+        transaction.commit();
+        return result;
+    }
 }
